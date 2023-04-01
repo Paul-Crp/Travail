@@ -1,0 +1,191 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={TP1 : Premiers pas pour la modélisation des séries temporelles},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{TP1 : Premiers pas pour la modélisation des séries temporelles}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\#EXO 1
+
+\hypertarget{section}{%
+\subsection{1)}\label{section}}
+
+View(sleep)
+
+p \textless- ggplot(sleep, aes(x=group, y=extra)) + geom\_boxplot()
+
+print(p)
+
+p + coord\_flip()
+
+p
+
+\hypertarget{section-1}{%
+\subsection{2)}\label{section-1}}
+
+attach(sleep)
+
+t.test(sleep,alternative = ``less'')
+
+sleep\(extra sleep\)group
+
+shapiro.test(extra{[}group==1{]}) shapiro.test(extra{[}group==2{]})
+
+detach(sleep)
+
+shapiro.test(sleep\(extra[sleep\)group==1{]})
+shapiro.test(sleep\(extra[sleep\)group==2{]})
+
+\hypertarget{section-2}{%
+\subsection{3)}\label{section-2}}
+
+attach(sleep)
+
+bartlett.test(extra\textasciitilde group)
+
+detach(extra)
+
+bartlett.test(sleep\(extra~sleep\)group)
+
+\hypertarget{section-3}{%
+\subsection{4)}\label{section-3}}
+
+attach(sleep)
+
+t.test(extra{[}group==1{]},extra{[}group==2{]},alternative =
+``less'',var.equal=TRUE)
+
+detach(sleep)
+
+\hypertarget{ne-pas-oublier-le-var.equalt-pour-faire-un-test-de-student-et-pas-la-variante-de-welch-degruxe9-de-libertuxe9-ruxe9el-contre-entiuxe8re}{%
+\subsubsection{Ne pas oublier le var.equal=T pour faire un test de
+Student et pas la variante de Welch (degré de liberté réel contre
+entière)}\label{ne-pas-oublier-le-var.equalt-pour-faire-un-test-de-student-et-pas-la-variante-de-welch-degruxe9-de-libertuxe9-ruxe9el-contre-entiuxe8re}}
+
+\hypertarget{il-ny-a-pas-de-choix-aluxe9atoire-de-population}{%
+\subsection{5) Il n'y a pas de choix aléatoire de
+population}\label{il-ny-a-pas-de-choix-aluxe9atoire-de-population}}
+
+\#EXO 2
+
+r=data.frame(Gr1=c(35, 40, 12, 15, 21, 14, 46, 10, 28, 48, 16, 30, 32,
+48, 31, 22, 12, 39, 19, 25),Gr2=c(2, 27, 38, 31, 1, 19, 1, 34, 3, 1, 2,
+3, 2, 1, 2, 1, 3, 29, 37, 2))
+
+View(r)
+
+r
+
+rr \textless- ggplot(r, aes(x=Gr1, y=Gr2)) + geom\_boxplot()
+
+print(rr)
+
+r + coord\_flip()
+
+r
+
+attach(r)
+
+t.test(r,alternative = ``less'')
+
+sleep\(extra sleep\)group
+
+shapiro.test(Gr1)
+
+shapiro.test(Gr2)
+
+bartlett.test(Gr1\textasciitilde Gr2)
+
+detach(r)
+
+v=data.frame(temps=c(35, 40, 12, 15, 21, 14, 46, 10, 28, 48, 16, 30, 32,
+48, 31, 22, 12, 39, 19, 25, 2, 27, 38, 31, 1, 19, 1, 34, 3, 1, 2, 3, 2,
+1, 2, 1, 3, 29, 37, 2),
+group=c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2))
+
+attach(v)
+
+shapiro.test(temps{[}group==1{]}) shapiro.test(temps{[}group==2{]})
+
+\#\#\#Pas de normalité sur le second groupe
+
+bartlett.test(temps\textasciitilde group)
+
+detach(v)
+
+vv \textless- ggplot(v, aes(x=group, y=temps, groubp=20)) +
+geom\_boxplot()
+
+print(vv)
+
+vv + coord\_flip()
+
+v
+
+boxplot(temps{[}group==1{]},temps{[}group==2{]})
+
+\end{document}

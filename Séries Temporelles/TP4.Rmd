@@ -1,0 +1,168 @@
+---
+title: "TP 4 : Estimation et prévision des processus SAMRIMA"
+author: "Paul Crespin"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Debut du TP4 vu en cours
+
+C'est une série temporelle
+
+```{r, warning=FALSE, message=FALSE}
+
+data(nottem)
+plot.ts(nottem, xlab='temps', ylab='température')
+
+fit <- decompose(nottem)
+plot(fit)
+
+fit2 <- decompose(nottem, type = "multiplicative")
+plot(fit2)
+
+monthplot(nottem)
+
+nott_a = window(nottem, end=c(1936,12))
+nott_v = window(nottem, start=c(1937,1))
+
+acf(nott_a, lag.max=40,main="") 
+acf(ts(nott_a),type="correlation",lag.max=40,main="") #(les deux sont pareils)
+#pas stationnaire car "On observe que l’ACF présente des pics aux retards multiples de 12 qui ne s’atténuent que très lentement : c’est le signe d’une non-stationnarité saisonnière."
+
+pacf(ts(nott_a),lag.max=40,main="") #
+
+acf(diff(ts(nott_a),12),type="correlation",lag.max=40,main="") #Les autocorrélations de la série différenciée à l’ordre 12 présente un pic à l’ordre 12 et une valeur non nulle en 24 puis une forte atténuation : caractéristique d’une saisonnalité.
+
+pacf(diff(ts(nott_a),12),lag.max=40,main="") #Le PACF de la série différenciée à l’ordre 12 présente un pic à l’ordre 12 et à l’ordre 13, ainsi qu’à l’ordre 1.
+
+#Question 2 SARIMA(p,0,q)(P,1,Q) (p pour AR, q pour MA) (PACF pour AR)
+# on peut estimer à max 1, max 1, max 2, max 2 (Tout ce lit sur les auto_co différenciés. les GRANDS se lisent sur les multiples de la saisonnalité (12 ici) et les petits se lisent sont les barres non significativement ignorables - par exemple le 13 ici car le c'est 1 + le 12 (PACF))
+
+library(forecast)
+fitm = arima(nott_a,order=c(1,0,0), seasonal=list(order=c(2,1,0), period=12))
+summary(fitm)
+
+fitmm= Arima(nott_a,order=c(1,0,0), seasonal=list(order=c(2,1,0), period=12),include.drift=TRUE)
+summary(fitmm)
+```
+
+L'ajout du drift n'est pas significatif
+
+AR1  0.324
+SAR1 -0.8848
+SAR2 -0.3040
+
+L'AIC est de 898.88 et de 900.88
+
+j'eu observé.
+
+```{r, warning=FALSE, message=FALSE}
+Box.test(fitm$residuals,lag=c(5))
+Box.test(fitm$residuals,lag=c(10))
+Box.test(fitm$residuals,lag=c(15))
+Box.test(fitm$residuals,lag=c(20))
+```
+
+les p-values sont >0.5, on ne peut pas rejeter l'ordre >3
+
+```{r, warning=FALSE, message=FALSE}
+shapiro.test(fitm$residuals)
+qqnorm(fitm$residuals/sqrt(fitm$sigma2))
+abline(a=0,b=1,col="red")
+```
+
+Comme p-value > 0.05, on ne peut affirmer que ce n'est pas un bruit blanc
+
+```{r, warning=FALSE, message=FALSE}
+fitm2 = arima(nott_a,order=c(1,0,0), seasonal=list(order=c(2,1,1), period=12))
+summary(fitm2)
+
+fitmm2 = Arima(nott_a,order=c(1,0,0), seasonal=list(order=c(2,1,1), period=12),include.drift=TRUE)
+summary(fitmm2)
+```
+
+écart type légérement supérieur (0.0693   0.1167  0.1091   0.0957  0.0050 VS 0.069   0.0709   0.0753   0.0102)
+AIC inférieur (886 VS 898)
+RMSE un peu inférieur (2.20 VS 2.32)
+
+```{r, warning=FALSE, message=FALSE}
+auto.arima(nott_a,d=0,D=1,max.p=2,max.q=2,seasonal=TRUE)-> fit_auto
+summary(fit_auto)
+acf(fit_auto$residuals)
+pacf(fit_auto$residuals)
+```
+
+AIC 887.92
+RMSE 2.196891
+Ecart 0.3211  0.3169  0.1162   0.1828   0.1996   0.1793
+
+On a un AIC à peine supérieur, un RMSE à peine inférieur.
+Les écarts-types sont en revanche bien supérieur.
+On peut voir que les autocorrélogrammes n’invalident pas la possibilité que les résidus des estimations soient des bruits blancs.
+
+## Question 7
+
+```{r, warning=FALSE, message=FALSE}
+pred.sarima = forecast(fitm, h=36)
+pred.sarima2 = forecast(fitm2, h=36)
+pred.sarimaa2 = forecast(fitmm2, h=36)
+pred.sarima_auto = forecast(fit_auto, h=36)
+```
+
+```{r, warning=FALSE, message=FALSE}
+plot(pred.sarima,main="Prévision de de 1937 à 1939")
+points(nott_v,col="darkgreen",lwd=2,type="l")
+plot(pred.sarima,main="Prévision de de 1937 à 1939")
+points(nott_v,col="darkgreen",lwd=2,type="l")
+plot(pred.sarima_auto,main="Prévision de de 1937 à 1939")
+points(nott_v,col="darkgreen",lwd=2,type="l")
+```
+
+```{r, warning=FALSE, message=FALSE}
+tnupp = ts(pred.sarima$upper[,1],start=c(1937,1),frequency=12)
+tnlow = ts(pred.sarima$lower[,1],start=c(1937,1),frequency=12)
+plot(window(pred.sarima$mean,start=c(1937,1)),col="darkblue",lwd=2,main="Prévision de de 1937")
+points(nott_v,col="darkgreen",lwd=2,type="l")
+points(tnupp, col="darkblue",lty=2, type="l")
+points(tnlow, col="darkblue",lty=2, type="l")
+```
+
+tnupp et tnlow sont les bornes supérieur et inférieur de l'intervalle de confiance.
+pred.sarima$mean est la moyenne entre les deux bornes.
+L'amplitude n'augmente pas beaucoup.
+
+## Question 8
+
+```{r, warning=FALSE, message=FALSE}
+a=0
+for (h in 1:36) {
+  a=a+(((pred.sarima$mean[h])-nott_v[h])^2)
+}
+a=a/36
+a
+
+a1=0
+for (h in 1:36) {
+  a1=a1+(((pred.sarima2$mean[h])-nott_v[h])^2)
+}
+a1=a1/36
+a1
+
+a2=0
+for (h in 1:36) {
+  a2=a2+(((pred.sarima_auto$mean[h])-nott_v[h])^2)
+}
+a2=a2/36
+a2
+
+library(Metrics)
+
+rmse(nott_v, pred.sarima$mean)
+rmse(nott_v, pred.sarima2$mean)
+rmse(nott_v, pred.sarimaa2$mean)
+rmse(nott_v, pred.sarima_auto$mean)
+
+```

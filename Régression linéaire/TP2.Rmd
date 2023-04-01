@@ -1,0 +1,208 @@
+---
+title: "TP 2 : Régression linéaire multiple"
+author: "Paul Crespin"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Etude exploratoire
+
+## Question 1
+
+```{r, warning=FALSE, message=FALSE}
+cars <- read.delim("C:/Users/Pol/Desktop/RStudio/Régression linéaire/cars.txt")
+cars_quantitative <- cars[,3:8]
+```
+
+## Question 2
+
+```{r, warning=FALSE, message=FALSE}
+attach(cars_quantitative)
+#detach(cars_quantitative)
+plot(MPG,Weight)
+plot(MPG,Drive_Ratio)
+plot(MPG,Horsepower)
+plot(MPG,Displacement)
+plot(MPG,Cylinders)
+
+pairs(cars_quantitative)
+
+round(cor(cars_quantitative),2)
+round(cor(cars_quantitative[,-6]),2)
+# On retire les cylindrés avec le -6 car ce n'est pas une variable "continue"
+```
+
+Les meilleurs corrélations avec MPG qu'on peut voir sont Weight et Horsepower.
+
+## Question 3
+
+```{r, warning=FALSE, message=FALSE}
+cars_quantitative2 <- cars_quantitative[2:38,]
+attach(cars_quantitative2)
+#detach(cars_quantitative)
+plot(MPG,Weight)
+plot(MPG,Drive_Ratio)
+plot(MPG,Horsepower)
+plot(MPG,Displacement)
+plot(MPG,Cylinders)
+
+pairs(cars_quantitative2)
+
+round(cor(cars_quantitative2),2)
+round(cor(cars_quantitative2[,-6]),2)
+```
+
+C'était un point atypique, le retirer permet de mieux voir les autres points.
+
+# Un peu de calcul à la main
+
+## Question 1
+
+```{r, warning=FALSE, message=FALSE}
+one=rep(1,38)
+x=as.matrix(cbind(one,cars_quantitative[,2:6]))
+y=data.matrix(cars_quantitative[,1])
+
+
+# Solve permet d'inverser des matrices, PAS ^-1 (faire l'inverse de chaque nombres dans la matrice) !!!!!!!
+
+bêta=solve((t(x)%*%x))%*%t(x)%*%y
+```
+
+## Question 2
+
+```{r, warning=FALSE, message=FALSE}
+yy=x%*%bêta
+
+eps=y-yy
+
+Px=x%*%solve(t(x)%*%x)%*%t(x)
+
+epss=(diag(38)-Px)%*%y
+
+#eps et epss sont identique, différentes méthodes
+
+p=ncol(cars_quantitative)
+
+sigma=sqrt(sum(eps^2))/(38-p)
+```
+
+## Question 3
+
+```{r, warning=FALSE, message=FALSE}
+SCR= sum(eps^2)
+SCE=sum((yy-mean(cars_quantitative[,1]))^2)
+SCT=SCR+SCE
+R2=SCE/SCT
+R2a= 1-(37)/(32)*(1-R2)
+```
+
+# Modèle linéaire et influence d'un point atypique
+
+## Question 1
+
+```{r, warning=FALSE, message=FALSE}
+detach(cars_quantitative2)
+attach(cars_quantitative)
+reg=lm(MPG~Weight+Drive_Ratio+Horsepower+Displacement+Cylinders)
+#Sans le attach, c'est lm(MPG...Cylinders,data=cars_quantitative)
+
+reg
+summary(reg)
+```
+
+## Question 2
+
+```{r, warning=FALSE, message=FALSE}
+
+fisher=((38-p)/5)*R2/(1-R2)
+pval_fisher=1-pf(fisher,p-1,38-p) # P(F>fisher) (proba)
+
+```
+
+## Question 3
+
+```{r, warning=FALSE, message=FALSE}
+detach(cars_quantitative)
+attach(cars_quantitative2)
+reg=lm(MPG~Weight+Drive_Ratio+Horsepower+Displacement+Cylinders)
+reg
+summary(reg)
+```
+
+Il y a des grosses différences suite au retrait de cet individu. Les 3 dernières ne sont plus significatives à 5%.
+
+# Sélection de variables
+
+## Question 1
+
+```{r, warning=FALSE, message=FALSE}
+reg=lm(MPG~Weight+Drive_Ratio+Horsepower+Displacement)
+reg
+summary(reg)
+reg=lm(MPG~Weight+Drive_Ratio+Horsepower)
+reg
+summary(reg)
+reg=lm(MPG~Weight+Drive_Ratio)
+reg
+summary(reg)
+```
+
+On ne garde que Weigth et Drive_Ratio
+
+## Question 2
+
+```{r, warning=FALSE, message=FALSE}
+reg=lm(MPG~Weight+Drive_Ratio+Horsepower+Displacement+Cylinders)
+reg
+summary(reg)
+reg=step(reg)
+```
+Step s'arrête après avoir retirer uniquement Cylinders.
+
+## Question 3
+
+```{r, warning=FALSE, message=FALSE}
+R2=c()
+R2a=c()
+AIC=c()
+BIC=c()
+
+for (i in 2:4){
+  for (ii in 3:5){
+    for (iii in 4:6){
+      if (i<ii & ii<iii & i<iii){
+        reg=lm(cars_quantitative2[,1]~cars_quantitative2[,i]+cars_quantitative2[,ii]+cars_quantitative2[,iii])
+        R2=c(R2,summary(reg)$r.squared)
+        R2a=c(R2a,summary(reg)$adj.r.squared)
+        AIC=c(AIC,AIC(reg))
+        BIC=c(BIC,BIC(reg))
+
+      }}}}
+R2
+R2a
+AIC
+BIC
+```
+
+## Question 4
+
+```{r, warning=FALSE, message=FALSE}
+
+```
+
+# Prévision
+
+```{r, warning=FALSE, message=FALSE}
+pre=matrix(data = c("US","France","Germany","Japan","Pontiac","CitroenC3","AudiA3","ToyotaCorona",NA,NA,NA,NA,3.654,2.99,3.22,4.001,3.044,3.101,2.885,3.965,95,102,65,128,120,192,136,145,8,5,8,7), nrow=4)
+reg=lm(cars_quantitative2[,1]~cars_quantitative2[,2]+cars_quantitative2[,3]+cars_quantitative2[,4])
+reg
+pre[,3]=reg$coefficients[1]+reg$coefficients[2]*as.numeric(pre[,4])+reg$coefficients[3]*as.numeric(pre[,5])+reg$coefficients[4]*as.numeric(pre[,6])
+pre
+
+nouveau=data.frame(Weight=3.654,Drive_Ratio=3.044,Horsepower=95,Displacement=120,Cylinders=8)
+predict(reg,new=nouveau,interval='conf')
+```

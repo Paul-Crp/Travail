@@ -1,0 +1,407 @@
+---
+title: "TP3 : Résolution de MDP à l'espace d'état infini"
+author: "Paul Crespin"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Simulations
+
+## Question 1
+
+```{r, warning=FALSE, message=FALSE}
+
+#Variables de bases
+nb_piafs <- 2
+nb_annees <- 20
+c <- 0
+historique_nb_piafs <- c(nb_piafs)
+historique_c <- c(c)
+alpha0 <- 5
+alpha1 <- 0.1
+alpha2 <- 0.2
+proba_d <- 0.45
+proba_b <- 0.45
+
+# On fait la boucle sur le nombre d'années avec 2 nouvelles lois uniformes pour chaque piafs, chaque jours
+# ainsi une actualisation du nombre d'oiseaux.
+
+for (i in 2:(nb_annees + 1)) {
+  if (nb_piafs != 0) {
+    for (x in 1:nb_piafs) {
+      d <- runif(1, min = 0, max = 1)
+      b <- runif(1, min = 0, max = 1)
+      if (d < dbinom(x = 1, size = 1, prob = proba_d)) {
+        nb_piafs <- nb_piafs - 1
+      }
+      if (b < dbinom(x = 1, size = 1, prob = proba_b)) {
+        nb_piafs <- nb_piafs + 1
+      }
+    }
+  }
+  historique_nb_piafs[i] <- nb_piafs
+  historique_c[i] <- c
+}
+
+# On ajoute la récompense finale
+if (nb_piafs == 0) {
+  c <- c - alpha0
+} else {
+  c <- c + nb_piafs
+}
+
+historique_c[nb_annees + 2] <- c
+```
+
+## Question 2
+
+```{r message=FALSE, warning=FALSE}
+par(mfrow <- c(1, 2))
+plot(c(0:nb_annees), historique_nb_piafs, type = "b")
+plot(c(0:(nb_annees + 1)), historique_c, type = "b")
+```
+
+## Question 3
+
+```{r, warning=FALSE, message=FALSE}
+
+#Variables de bases
+nb_piafs <- 2
+nb_annees <- 20
+c <- 0
+alpha0 <- 5
+alpha1 <- 0.1
+alpha2 <- 0.2
+proba_d <- 0.45
+proba_b <- 0.45
+nb_boucles <- 100000
+p <- matrix(nrow = 2, ncol = nb_boucles)
+
+# On crée une matrice à 2 lignes et autant de colonnes que nécessaire,
+# la première pour le coût, la seconde pour le nombre d'oiseaux au bout de 20 ans.
+
+for (ii in 1:nb_boucles) {
+
+  nb_piafs <- 2
+  c <- 0
+
+  # Ces variables ont besoin d'être remises à 0 à chaque nouvelle boucle et on retire les historiques.
+
+  for (i in 2:(nb_annees + 1)) {
+    if (nb_piafs != 0) {
+      for (x in 1:nb_piafs) {
+        d <- runif(1, min = 0, max = 1)
+        b <- runif(1, min = 0, max = 1)
+        if (d < dbinom(x = 1, size = 1, prob = proba_d)) {
+          nb_piafs <- nb_piafs - 1
+        }
+        if (b < dbinom(x = 1, size = 1, prob = proba_b)) {
+         nb_piafs <- nb_piafs + 1
+        }
+      }
+    }
+  }
+
+  # On ajoute la récompense finale
+  if (nb_piafs == 0) {
+    c <- c - alpha0
+  } else {
+    c <- c + nb_piafs
+  }
+
+  p[1, ii] <- c
+  p[2, ii] <- nb_piafs
+
+  # On rajoute le ii-ème gain final et nombre d'oiseaux à la ii-ème place de la matrice.
+
+}
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+print("Estimation du gain:")
+rowMeans(p)
+```
+
+```{r, warning=FALSE, message=FALSE}
+v=c(0)
+v[1] <- (mean((p[1,])^2) - mean(p[1,])^2) / (nb_boucles - 1)
+v[2] <- (mean((p[2,])^2) - mean(p[2,])^2) / (nb_boucles - 1)
+# On ne multiplie pas par "nb_boucles" car on le divise par cette même quantité dans le calcul de l'IC.
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+print("IC")
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+print(rowMeans(p) - 1.96 * sqrt(v))
+print(rowMeans(p) + 1.96 * sqrt(v))
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+a <- 0
+for (i in 1:nb_boucles) {
+  if (p[i] > 0) {
+    a <- a + 1
+  }
+}
+a
+```
+
+## Question 4
+
+```{r, warning=FALSE, message=FALSE}
+nb_piafs <- 2
+nb_annees <- 20
+c <- 0
+historique_nb_piafs <- c(nb_piafs)
+historique_c <- c(c)
+alpha0 <- 5
+alpha1 <- 0.1
+alpha2 <- 0.2
+proba_d <- 0.45
+proba_b <- 0.5 #On change la probabilité de naissance.
+
+for (i in 2:(nb_annees + 1)) {
+  if (nb_piafs != 0) {
+    for (x in 1:nb_piafs) {
+      d <- runif(1, min = 0, max = 1)
+      b <- runif(1, min = 0, max = 1)
+      if (d < dbinom(x = 1, size = 1, prob = proba_d)) {
+        nb_piafs <- nb_piafs - 1
+      }
+      if (b < dbinom(x = 1, size = 1, prob = proba_b)) {
+        nb_piafs <- nb_piafs + 1
+      }
+    }
+  c <- c - alpha1
+  }
+  historique_nb_piafs[i] <- nb_piafs
+  historique_c[i] <- c
+}
+
+if (nb_piafs == 0) {
+  c <- c - alpha0
+} else {
+  c <- c + nb_piafs
+}
+
+historique_c[nb_annees + 2] <- c
+```
+
+## Question 5
+
+```{r message=FALSE, warning=FALSE}
+par(mfrow <- c(1, 2))
+plot(c(0:nb_annees), historique_nb_piafs, type = "b")
+plot(c(0:(nb_annees + 1)), historique_c, type = "b")
+```
+
+## Question 6
+
+```{r, warning=FALSE, message=FALSE}
+nb_piafs <- 2
+nb_annees <- 20
+c <- 0
+alpha0 <- 5
+alpha1 <- 0.1
+alpha2 <- 0.2
+proba_d <- 0.45
+proba_b <- 0.5
+nb_boucles <- 100000
+p <- matrix(nrow = 2, ncol = nb_boucles)
+
+for (ii in 1:nb_boucles) {
+
+  nb_piafs <- 2
+  c <- 0
+
+  for (i in 2:(nb_annees + 1)) {
+    if (nb_piafs != 0) {
+      for (x in 1:nb_piafs) {
+        d <- runif(1, min = 0, max = 1)
+        b <- runif(1, min = 0, max = 1)
+        if (d < dbinom(x = 1, size = 1, prob = proba_d)) {
+          nb_piafs <- nb_piafs - 1
+        }
+        if (b < dbinom(x = 1, size = 1, prob = proba_b)) {
+          nb_piafs <- nb_piafs + 1
+        }
+      }
+    }
+  c <- c - alpha1
+  }
+
+  if (nb_piafs == 0) {
+    c <- c - alpha0
+  } else {
+   c <- c + nb_piafs
+  }
+
+  p[1, ii] <- c
+  p[2, ii] <- nb_piafs
+}
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+print("Estimation du gain:")
+rowMeans(p)
+```
+
+```{r, warning=FALSE, message=FALSE}
+v=c(0)
+v[1] <- (mean((p[1,])^2) - mean(p[1,])^2) / (nb_boucles - 1)
+v[2] <- (mean((p[2,])^2) - mean(p[2,])^2) / (nb_boucles - 1)
+# On ne multiplie pas par "nb_boucles" car on le divise par cette même quantité dans le calcul de l'IC.
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+print("IC")
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+print(rowMeans(p) - 1.96 * sqrt(v))
+print(rowMeans(p) + 1.96 * sqrt(v))
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+a <- 0
+for (i in 1:nb_boucles) {
+  if (p[i] > 0) {
+    a <- a + 1
+  }
+}
+a
+```
+
+## Question 7
+
+```{r, warning=FALSE, message=FALSE}
+nb_piafs <- 2
+nb_annees <- 20
+c <- 0
+historique_nb_piafs <- c(nb_piafs)
+historique_c <- c(c)
+alpha0 <- 5
+alpha1 <- 0.1
+alpha2 <- 0.2
+proba_d <- 0.35 #On change la probabilité de décès
+proba_b <- 0.45
+
+for (i in 2:(nb_annees + 1)) {
+  if (nb_piafs != 0) {
+    for (x in 1:nb_piafs) {
+      d <- runif(1, min = 0, max = 1)
+      b <- runif(1, min = 0, max = 1)
+      if (d < dbinom(x = 1, size = 1, prob = proba_d)) {
+        nb_piafs <- nb_piafs - 1
+      }
+      if (b < dbinom(x = 1, size = 1, prob = proba_b)) {
+        nb_piafs <- nb_piafs + 1
+      }
+    }
+    c <- c - alpha2
+  }
+  historique_nb_piafs[i] <- nb_piafs
+  historique_c[i] <- c
+}
+
+if (nb_piafs == 0) {
+  c <- c - alpha0
+} else {
+  c <- c + nb_piafs
+}
+
+historique_c[nb_annees + 2] <- c
+```
+
+## Question 8
+
+```{r message=FALSE, warning=FALSE}
+par(mfrow <- c(1, 2))
+plot(c(0:nb_annees), historique_nb_piafs, type = "b")
+plot(c(0:(nb_annees + 1)), historique_c, type = "b")
+```
+
+## Question 9
+
+```{r, warning=FALSE, message=FALSE}
+
+nb_piafs <- 2
+nb_annees <- 20
+c <- 0
+alpha0 <- 5
+alpha1 <- 0.1
+alpha2 <- 0.2
+proba_d <- 0.35
+proba_b <- 0.45
+nb_boucles <- 100000
+p <- matrix(nrow = 2, ncol = nb_boucles)
+
+for (ii in 1:nb_boucles) {
+
+  nb_piafs <- 2
+  c <- 0
+
+  for (i in 2:(nb_annees + 1)) {
+    if (nb_piafs != 0) {
+      for (x in 1:nb_piafs) {
+        d <- runif(1, min = 0, max = 1)
+        b <- runif(1, min = 0, max = 1)
+        if (d < dbinom(x = 1, size = 1, prob = proba_d)) {
+          nb_piafs <- nb_piafs - 1
+        }
+        if (b < dbinom(x = 1, size = 1, prob = proba_b)) {
+          nb_piafs <- nb_piafs + 1
+        }
+      }
+    }
+  c <- c - alpha2
+  }
+
+  if (nb_piafs == 0) {
+   c <- c - alpha0
+  } else {
+   c <- c + nb_piafs
+  }
+
+  p[1, ii] <- c
+  p[2, ii] <- nb_piafs
+}
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+print("Estimation du gain:")
+rowMeans(p)
+```
+
+```{r, warning=FALSE, message=FALSE}
+v=c(0)
+v[1] <- (mean((p[1,])^2) - mean(p[1,])^2) / (nb_boucles - 1)
+v[2] <- (mean((p[2,])^2) - mean(p[2,])^2) / (nb_boucles - 1)
+# On ne multiplie pas par "nb_boucles" car on le divise par cette même quantité dans le calcul de l'IC.
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+print("IC")
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+print(rowMeans(p) - 1.96 * sqrt(v))
+print(rowMeans(p) + 1.96 * sqrt(v))
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+a <- 0
+for (i in 1:nb_boucles) {
+  if (p[i] > 0) {
+    a <- a + 1
+  }
+}
+a
+```

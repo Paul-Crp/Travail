@@ -609,7 +609,7 @@ for (i in 2:(nb_annees + 1)) {
     }
     c1 <- c1 - alpha2
   }
-  c <- c - alpha1
+  c <- c - alpha2
   historique_nb_oiseaux[i] <- nb_oiseaux
   historique_c[i] <- c
   historique_c_bis[i] <- c1
@@ -665,7 +665,7 @@ for (i in 2:(nb_annees + 1)) {
     }
     c1 <- c1 - alpha2
   }
-  c <- c - alpha1
+  c <- c - alpha2
   historique_nb_oiseaux2[i] <- nb_oiseaux
   historique_c2[i] <- c
   historique_c_bis2[i] <- c1
@@ -703,7 +703,7 @@ for (i in 2:(nb_annees + 1)) {
     }
     c1 <- c1 - alpha2
   }
-  c <- c - alpha1
+  c <- c - alpha2
   historique_nb_oiseaux3[i] <- nb_oiseaux
   historique_c3[i] <- c
   historique_c_bis3[i] <- c1
@@ -741,7 +741,7 @@ for (i in 2:(nb_annees + 1)) {
     }
     c1 <- c1 - alpha2
   }
-  c <- c - alpha1
+  c <- c - alpha2
   historique_nb_oiseaux4[i] <- nb_oiseaux
   historique_c4[i] <- c
   historique_c_bis4[i] <- c1

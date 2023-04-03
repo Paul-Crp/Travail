@@ -953,7 +953,7 @@ alpha0 <- 5
 alpha2 <- 0.2
 proba_d <- 0.35
 proba_b <- 0.45
-nb_boucles <- 1000
+nb_boucles <- 1000000
 p <- matrix(nrow = 3, ncol = nb_boucles)
 
 for (ii in 1:nb_boucles) {
@@ -1045,50 +1045,12 @@ Donc chaque année, chaque oiseau se "débouble". On a donc 2^21^ = 2.097.152 oi
 
 ## Question 11
 
-```{r message=FALSE, warning=FALSE}
-N=3
-x=2
+A cause de l'explosion combinatoire du nombre d'oiseaux, il paraît difficile de faire tourner l'algorithme avec autant de possibilité, sans utiliser des techniques de calculs optimisées et/ou un ordinateur puissant en utilisant les multiples coeurs disponibles en parallèle, en un temps raisonnable. 
 
-# Matrices de transition
-Q <- array(0, dim <- c(2, 2, 3))
+La matrice de transition contiendrait presque 13.2 millard d'éléments, qui occuperait environ 6.6 To d'espace (en prenant comme base de calcul pour l'espace requis (selon R) une matrice de 15 Millions d'éléments qui prends 60 MB = 7.5 Mo) . C'est beaucoup trop.
 
-# Ne rien faire : action 0
-Q[, , 1] <- matrix(c(0.45, 0.55, 
-                     0.45, 0.55), nrow = 2, byrow = TRUE)
+## Question 12
 
-# Entretien : action 1
-Q[, , 2] <- matrix(c(0.35, 0.65, 
-                     0.45, 0.55), nrow = 2, byrow = TRUE)
 
-# Rénovation : action 2
-Q[, , 3] <- matrix(c(0.45, 0.55, 
-                     0.5,  0.5), nrow = 2, byrow = TRUE)
 
-# Récompense instantanée
-rec <- matrix(c(0,    0,    0,
-                -0.1, -0.1, -0.1,
-                -0.2, -0.2, -0.2), nrow = 3)
-
-# Récompense finale
-gain <- c(x, -5)
-
-V <- matrix(0, nrow = 1 + (2^(N)) * x, ncol = N + 1)
-maximiseur <- matrix(0, nrow = 1 + (2^(N)) * x, ncol = N)
-V[ , 1] <- (0:((2^(N)) * x))
-V[1, 1] <- (-5)
-for (n in 1:N) {
-  V[1, n + 1] <- -5
-  for (k in 1 : ((2^(N - n)) * x)) {
-    tmp <- NULL
-    for (a in 1 : 3) {
-      tmp <- rec[x, ] + V[, n] %*% Q[x, , ]
-      maximiseur[x, n] <- which.max(tmp)
-      V[x, n + 1] <- max(tmp)
-    }
-    v <- max(tmp)
-    f <- which.max(tmp)
-    V[k + 1, n + 1] <- v
-    maximiseur[k + 1, n] <- f - 1
-  }
-}
-```
+## Question 13

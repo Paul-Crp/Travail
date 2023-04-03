@@ -50,20 +50,17 @@ On va donc chercher une valeur de M tel que le nombre d'individus au bout de 20 
 # Variables de bases
 nb_annees <- 20
 alpha0 <- 5
-proba_d <- 0.45
+alpha2 <- 0.2
+proba_d <- 0.35
 proba_b <- 0.45
 nb_boucles <- 1000000
-p <- matrix(nrow = 2, ncol = nb_boucles)
-
-# On crée une matrice à 2 lignes et autant de colonnes que nécessaire,
-# la première pour le coût, la seconde pour le nombre d'oiseaux au bout de 20 ans.
+p <- matrix(nrow = 3, ncol = nb_boucles)
 
 for (ii in 1:nb_boucles) {
 
   nb_oiseaux <- 2
   c <- 0
-
-  # Ces variables ont besoin d'être remises à 0 à chaque nouvelle boucle et on retire les historiques.
+  c1 <- 0
 
   for (i in 2:(nb_annees + 1)) {
     if (nb_oiseaux != 0) {
@@ -74,21 +71,25 @@ for (ii in 1:nb_boucles) {
           nb_oiseaux <- nb_oiseaux - 1
         }
         if (b < proba_b) {
-         nb_oiseaux <- nb_oiseaux + 1
+          nb_oiseaux <- nb_oiseaux + 1
         }
       }
+      c1 <- c1 - alpha2
     }
+  c <- c - alpha2
   }
 
-  # On ajoute la récompense finale
   if (nb_oiseaux == 0) {
     c <- c - alpha0
+    c1 <- c1 - alpha0
   } else {
     c <- c + nb_oiseaux
+    c1 <- c1 + nb_oiseaux
   }
 
   p[1, ii] <- c
-  p[2, ii] <- nb_oiseaux
+  p[2, ii] <- c1
+  p[3, ii] <- nb_oiseaux
 
   # On rajoute le ii-ème gain final et nombre d'oiseaux à la ii-ème place de la matrice.
 
@@ -103,45 +104,44 @@ max(p[1,])
 
 ```{r message=FALSE, warning=FALSE}
 a <- 0
-#r <- c()
+r <- c()
 for (i in 1:nb_boucles) {
   if (p[2, i] > 0) {
     a <- a + 1
-    #r <- c(r, p[2, i])
+    r <- c(r, p[2, i])
+    if (i %% 100000 == 0) {
+      print(i)
+    }
   }
 }
 a / nb_boucles*100
-#mean(r)
+mean(r)
 
 b=0
 
 for (i in 1:a) {
-  if (r[i] > 39) {
+  if (r[i] > 119) {
     b <- b + 1
   }
 }
 
 b/a*100
 
-# 27 pour 98.93504% des cas survivants.
-# 20 pour 98.9659% de tous les cas.
-# 39 pour 99.89713 des cas survivants.
-# 32 pour 99.8887 de tous les cas.
+# 83 pour 98.99169% des cas survivants.
+# 73 pour 98.9925% de tous les cas.
+# 119 pour 99.89773% des cas survivants.
+# 109 pour 99.8945% de tous les cas.
 
 ```
 
 
 ```{r message=FALSE, warning=FALSE}
-
-M = 39
-
 p_birth=c(0.45, 0.5,  0.45)
 
 p_death=c(0.45, 0.45, 0.35)
 
-population = 2
-
 transition_density = function(population, action) {
+  
       # distribution of birth
       birth_density = dbinom(0:population, population, p_birth[action])
 
@@ -166,66 +166,64 @@ transition_density = function(population, action) {
 
 N <- 20
 
-# Matrices de transition
-Q <- array(0, dim <- c(4, 4, 3))
+M=40
 
-# Ne rien faire : action 0
-Q[, , 1] <- matrix(c(0, 0.8, 0,   0.2,
-                    0, 0,   0.8, 0.2,
-                    0, 0,   0.5, 0.5,
-                    0, 0,   0,   0), nrow = 4, byrow = TRUE)
 
-# Entretien : action 1
-Q[, , 2] <- matrix(c(0.75, 0.25, 0,    0,
-                    0,     0.6,  0.3,  0.1,
-                    0,     0,    0.75, 0.25,
-                    0,     0,    0,    0), nrow = 4, byrow = TRUE)
-
-# Rénovation : action 2
-Q[, , 3] <- matrix(c(0, 0, 0, 0,
-                     1, 0, 0, 0,
-                     1, 0, 0, 0,
-                     1, 0, 0, 0), nrow = 4, byrow = TRUE)
-
-#Chacune des lignes de 0 rajoutées aurait pu être n'importe quel nombre,
-#cela n'a pas d'importance (pas besoin de respecter les propriétés
-#de matrice de transition pour ces lignes)
 
 # Récompense instantanée
-rec <- matrix(c(0, -0.1, -0.2), nrow = 3)
+rec <- matrix(c(0, -0.1, -0.2), nrow = 1)
 
 # Récompense finale
 gain <- c(-5,x)
 
-for (n in 1:N) {
-  for (x in 1:4) {
-    tmp <- rec[x, ] + V[, n] %*% Q[x, , ]
-    pi[x, n] <- which.max(tmp)
-    V[x, n + 1] <- max(tmp)
-  }
-}
-
 N=20
-M=39
+M=100
 
-V <- matrix(0, nrow = M+1, ncol = N + 1)
-C <- matrix(0, nrow = M+1, ncol = N + 1)
-maximiseur <- matrix(0, nrow = M+1, ncol = N)
+# Matrices de transition
+Q <- array(0, dim <- c((M+1), (M+1), 3))
+
+# Ne rien faire : action 0
+q1 <- NULL
+for (i in 0:M) {
+  q1 <- c(q1,transition_density(i,1))
+}
+
+Q[, , 1] <- matrix(q1, nrow = (M+1), byrow = TRUE)
+
+
+
+# Augmenatation de la fécondité : action 1
+q2 <- NULL
+for (i in 0:M) {
+  q2 <- c(q2,transition_density(i,2))
+}
+
+Q[, , 2] <- matrix(q2, nrow = (M+1), byrow = TRUE)
+
+# Diminution des décès : action 2
+q3 <- NULL
+for (i in 0:M) {
+  q3 <- c(q3,transition_density(i,3))
+}
+
+Q[, , 3] <- matrix(q3, nrow = (M+1), byrow = TRUE)
+
+V <- matrix(-1, nrow = M+1, ncol = N + 1)
+maximiseur <- matrix(-1, nrow = M+1, ncol = N)
 V[, 1] <- (0:M)
-C[, 1] <- (0:M)
-C[1, 1] <- -5
+V[1, 1] <- -5
+
 for (n in 1:N) {
-  V[1, n + 1] <- 0
-  for (k in 1:M) {
-    tmp <- NULL
-    for (a in 1:3) {
-      tmp[a] <- rec[a, ] + V[, n] %*% transition_density(floor(max(V[, n])),a)
+  for (k in 1:(M+1)) {
+    if (k <= 2^(N-n+1)+1) {
+      tmp <- NULL
+      tmp <- rec + V[, n] %*% Q[k, , ]
+      v <- max(tmp)
+      f <- which.max(tmp)
+      V[k, n + 1] <- v
+      maximiseur [k, n] <- f - 1
     }
-    f <- which.max(tmp)
-    v <- max(tmp)
-    V[k + 1, n + 1] <- V[, n] %*% transition_density(floor(max(V[, n])),f)
-    C[k + 1, n + 1] <- C[k + 1, n] + rec[f]
-    maximiseur [k + 1, n] <- f - 1
   }
 }
+
 ```

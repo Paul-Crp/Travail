@@ -50,6 +50,8 @@ for (i in 2:(nb_annees + 1)) {
   historique_c[i] <- c
 }
 
+
+
 # On ajoute la récompense finale
 
 if (nb_oiseaux == 0) {
@@ -63,26 +65,26 @@ historique_c[nb_annees + 2] <- c
 
 ## Question 2
 
-On va tracer quelques courbes de la politique 0. Le gros point rouge est le cout final après la récompense final.
+On va tracer quelques courbes de la politique 0. Le gros point rouge est le coût final après la récompense final à la 20^ème^ année.
 
-```{r message=FALSE, warning=FALSE, fig.height = 3.6}
+```{r message=FALSE, warning=FALSE, fig.height = 3.3}
 par(mfrow = c(1, 2))
 plot(c(0:nb_annees), historique_nb_oiseaux, main = "Nombre d'oiseaux en fonction des
      années", cex.main = 0.7, xlab = "Année", ylab = "Nombre d'oiseaux", type = "b")
 if (historique_c[(nb_annees + 2)] > 0) {
-  ylim = c(0, historique_c[(nb_annees + 2)])
+  ylim <- c(0, historique_c[(nb_annees + 2)])
 } else {
-  ylim = c(historique_c[(nb_annees + 2)], 0)
+  ylim <- c(historique_c[(nb_annees + 2)], 0)
 }
-plot(c(0:nb_annees), historique_c[1:(nb_annees +1)], ylim = ylim, main = "Coût en
+plot(c(0:nb_annees), historique_c[1:(nb_annees + 1)], ylim = ylim, main = "Coût en
      fonction des années", cex.main = 0.7, xlab = "Année", ylab = "Coût", type = "b")
 points(nb_annees, historique_c[(nb_annees + 2)], col = "red", pch = 16)
-segments(x0 = nb_annees, 
-         y0 = historique_c[(nb_annees +1)] + ((historique_c[(nb_annees + 2)] -
-                                                 historique_c[(nb_annees +1)]) / 30), 
+segments(x0 = nb_annees,
+         y0 = historique_c[(nb_annees + 1)] + ((historique_c[(nb_annees + 2)] -
+                                                 historique_c[(nb_annees + 1)]) / 30),
          x1 = nb_annees,
          y1 = historique_c[(nb_annees + 2)] - ((historique_c[(nb_annees + 2)] -
-                                                  historique_c[(nb_annees +1)]) / 30))
+                                                  historique_c[(nb_annees + 1)]) / 30))
 ```
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
@@ -188,42 +190,42 @@ historique_c4[nb_annees + 2] <- c
 par(mfrow = c(3, 2))
 plot(c(0:nb_annees), historique_nb_oiseaux2, xlab = "Année", ylab = "Nombre d'oiseaux", type = "b", cex.axis = 2, cex.lab = 1.5)
 if (historique_c2[(nb_annees + 2)] > 0) {
-  ylim = c(0, historique_c2[(nb_annees + 2)])
+  ylim <- c(0, historique_c2[(nb_annees + 2)])
 } else {
-  ylim = c(historique_c2[(nb_annees + 2)], 0)
+  ylim <- c(historique_c2[(nb_annees + 2)], 0)
 }
-plot(c(0:nb_annees), historique_c2[1:(nb_annees +1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b", cex.axis = 2, cex.lab = 1.5)
+plot(c(0:nb_annees), historique_c2[1:(nb_annees + 1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b", cex.axis = 2, cex.lab = 1.5)
 points(20, historique_c2[(nb_annees + 2)], col = "red", pch = 16)
-segments(x0 = nb_annees, 
-         y0 = historique_c2[(nb_annees +1)] + ((historique_c2[(nb_annees + 2)] - historique_c2[(nb_annees +1)]) / 30), 
+segments(x0 = nb_annees,
+         y0 = historique_c2[(nb_annees + 1)] + ((historique_c2[(nb_annees + 2)] - historique_c2[(nb_annees + 1)]) / 30),
          x1 = nb_annees,
-         y1 = historique_c2[(nb_annees + 2)] - ((historique_c2[(nb_annees + 2)] - historique_c2[(nb_annees +1)]) / 30))
+         y1 = historique_c2[(nb_annees + 2)] - ((historique_c2[(nb_annees + 2)] - historique_c2[(nb_annees + 1)]) / 30))
 
 plot(c(0:nb_annees), historique_nb_oiseaux3, xlab = "Année", ylab = "Nombre d'oiseaux", type = "b", cex.axis = 2, cex.lab = 1.5)
 if (historique_c3[(nb_annees + 2)] > 0) {
-  ylim = c(0, historique_c3[(nb_annees + 2)])
+  ylim <- c(0, historique_c3[(nb_annees + 2)])
 } else {
-  ylim = c(historique_c3[(nb_annees + 2)], 0)
+  ylim <- c(historique_c3[(nb_annees + 2)], 0)
 }
-plot(c(0:nb_annees), historique_c3[1:(nb_annees +1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b", cex.axis = 2, cex.lab = 1.5)
+plot(c(0:nb_annees), historique_c3[1:(nb_annees + 1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b", cex.axis = 2, cex.lab = 1.5)
 points(20, historique_c3[(nb_annees + 2)], col = "red", pch = 16)
-segments(x0 = nb_annees, 
-         y0 = historique_c3[(nb_annees +1)] + ((historique_c3[(nb_annees + 2)] - historique_c3[(nb_annees +1)]) / 30), 
+segments(x0 = nb_annees,
+         y0 = historique_c3[(nb_annees + 1)] + ((historique_c3[(nb_annees + 2)] - historique_c3[(nb_annees + 1)]) / 30),
          x1 = nb_annees,
-         y1 = historique_c3[(nb_annees + 2)] - ((historique_c3[(nb_annees + 2)] - historique_c3[(nb_annees +1)]) / 30))
+         y1 = historique_c3[(nb_annees + 2)] - ((historique_c3[(nb_annees + 2)] - historique_c3[(nb_annees + 1)]) / 30))
 
 plot(c(0:nb_annees), historique_nb_oiseaux4, xlab = "Année", ylab = "Nombre d'oiseaux", type = "b", cex.axis = 2, cex.lab = 1.5)
 if (historique_c4[(nb_annees + 2)] > 0) {
-  ylim = c(0, historique_c4[(nb_annees + 2)])
+  ylim <- c(0, historique_c4[(nb_annees + 2)])
 } else {
-  ylim = c(historique_c4[(nb_annees + 2)], 0)
+  ylim <- c(historique_c4[(nb_annees + 2)], 0)
 }
-plot(c(0:nb_annees), historique_c4[1:(nb_annees +1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b", cex.axis = 2, cex.lab = 1.5)
+plot(c(0:nb_annees), historique_c4[1:(nb_annees + 1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b", cex.axis = 2, cex.lab = 1.5)
 points(20, historique_c4[(nb_annees + 2)], col = "red", pch = 16)
-segments(x0 = nb_annees, 
-         y0 = historique_c4[(nb_annees +1)] + ((historique_c4[(nb_annees + 2)] - historique_c4[(nb_annees +1)]) / 30), 
+segments(x0 = nb_annees,
+         y0 = historique_c4[(nb_annees + 1)] + ((historique_c4[(nb_annees + 2)] - historique_c4[(nb_annees + 1)]) / 30),
          x1 = nb_annees,
-         y1 = historique_c4[(nb_annees + 2)] - ((historique_c4[(nb_annees + 2)] - historique_c4[(nb_annees +1)]) / 30))
+         y1 = historique_c4[(nb_annees + 2)] - ((historique_c4[(nb_annees + 2)] - historique_c4[(nb_annees + 1)]) / 30))
 ```
 
 On voit que la politique 0 est assez aléatoire et la survie des oiseaux est difficile. On voit aussi que le coût ne varie qu'à la dernière année, au moment de "faire les comptes".
@@ -245,7 +247,7 @@ nb_annees <- 20
 alpha0 <- 5
 proba_d <- 0.45
 proba_b <- 0.45
-nb_boucles <- 1000
+nb_boucles <- 1000000
 p <- matrix(nrow = 2, ncol = nb_boucles)
 
 # On crée une matrice à 2 lignes et autant de colonnes que nécessaire,
@@ -256,7 +258,7 @@ for (ii in 1:nb_boucles) {
   nb_oiseaux <- 2
   c <- 0
 
-  # Ces variables ont besoin d'être remises à 0 à chaque nouvelle boucle 
+  # Ces variables ont besoin d'être remises à 0 à chaque nouvelle boucle
   # et on retire les historiques, on ne garde que les valeurs finales.
 
   for (i in 2:(nb_annees + 1)) {
@@ -323,11 +325,11 @@ for (i in 1:nb_boucles) {
     r <- c(r, p[2, i])
   }
 }
-a1 / nb_boucles
+a1 / nb_boucles * 100
 mean(r)
 ```
 
-On voit que le taux de survie est à peine de 28,372%, ce qui est très faible. Cela entraine le fort coût de 5 dans 71,628% des cas. On voit bien l'influence importante de l'extinction de l'espèce, qui est irréversible. De plus, on n'a que 7 oiseaux en moyenne quand l'espèce survit, ce qui est très peu.
+On voit que le taux de survie est à peine de `r a1 / nb_boucles * 100`%, ce qui est très faible. Cela entraîne le fort coût de 5 dans `r 100 - a1 / nb_boucles * 100`% des cas. On voit bien l'influence importante de l'extinction de l'espèce, qui est irréversible. De plus, on n'a que `r round(mean(r))` oiseaux en moyenne quand l'espèce survit, ce qui est très peu.
 
 ## Question 4
 
@@ -391,23 +393,23 @@ par(mfrow = c(1, 2))
 plot(c(0:nb_annees), historique_nb_oiseaux, main = "Nombre d'oiseaux en fonction des
      années", cex.main = 0.7, xlab = "Année", ylab = "Nombre d'oiseaux", type = "b")
 if (historique_c[(nb_annees + 2)] > 0) {
-  ylim = c(min(historique_c), historique_c[(nb_annees + 2)])
+  ylim <- c(min(historique_c), historique_c[(nb_annees + 2)])
 } else {
-  ylim = c(historique_c[(nb_annees + 2)], 0)
+  ylim <- c(min(historique_c[(nb_annees + 2)], min(historique_c)), 0)
 }
-plot(c(0:nb_annees), historique_c[1:(nb_annees +1)], ylim = ylim, main = "Coût en
+plot(c(0:nb_annees), historique_c[1:(nb_annees + 1)], ylim = ylim, main = "Coût en
      fonction des années", cex.main = 0.7, xlab = "Année", ylab = "Coût", type = "b")
 if (historique_c_bis[nb_annees + 2] != historique_c[nb_annees + 2]) {
-  points(c(0:nb_annees), historique_c_bis[1:(nb_annees +1)], type = "b", col = "darkgreen")
+  points(c(0:nb_annees), historique_c_bis[1:(nb_annees + 1)], type = "b", col = "darkgreen")
   points(20, historique_c_bis[(nb_annees + 2)], col = "darkgreen", pch = 16)
 }
 points(20, historique_c[(nb_annees + 2)], col = "red", pch = 16)
 segments(x0 = nb_annees,
-         y0 = historique_c[(nb_annees +1)] + ((historique_c[(nb_annees + 2)] -
-                                                 historique_c[(nb_annees +1)]) / 30), 
+         y0 = historique_c[(nb_annees + 1)] + ((historique_c[(nb_annees + 2)] -
+                                                 historique_c[(nb_annees + 1)]) / 30),
          x1 = nb_annees,
          y1 = historique_c[(nb_annees + 2)] - ((historique_c[(nb_annees + 2)] -
-                                                  historique_c[(nb_annees +1)]) / 30),
+                                                  historique_c[(nb_annees + 1)]) / 30),
          col = "red")
 ```
 
@@ -536,54 +538,54 @@ historique_c_bis4[nb_annees + 2] <- c1
 par(mfrow = c(3, 2))
 plot(c(0:nb_annees), historique_nb_oiseaux2, xlab = "Année", ylab = "Nombre d'oiseaux", type = "b")
 if (historique_c2[(nb_annees + 2)] > 0) {
-  ylim = c(min(historique_c2), historique_c2[(nb_annees + 2)])
+  ylim <- c(min(historique_c2), historique_c2[(nb_annees + 2)])
 } else {
-  ylim = c(historique_c2[(nb_annees + 2)], 0)
+  ylim <- c(min(historique_c2[(nb_annees + 2)], min(historique_c2)), 0)
 }
-plot(c(0:nb_annees), historique_c2[1:(nb_annees +1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b")
+plot(c(0:nb_annees), historique_c2[1:(nb_annees + 1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b")
 if (historique_c_bis2[nb_annees + 2] != historique_c2[nb_annees + 2]) {
-  points(c(0:nb_annees), historique_c_bis2[1:(nb_annees +1)], type = "b", col = "darkgreen")
+  points(c(0:nb_annees), historique_c_bis2[1:(nb_annees + 1)], type = "b", col = "darkgreen")
   points(20, historique_c_bis2[(nb_annees + 2)], col = "darkgreen", pch = 16)
 }
 points(20, historique_c2[(nb_annees + 2)], col = "red", pch = 16)
 segments(x0 = nb_annees,
-         y0 = historique_c2[(nb_annees +1)] + ((historique_c2[(nb_annees + 2)] - historique_c2[(nb_annees +1)]) / 30), 
+         y0 = historique_c2[(nb_annees + 1)] + ((historique_c2[(nb_annees + 2)] - historique_c2[(nb_annees + 1)]) / 30),
          x1 = nb_annees,
-         y1 = historique_c2[(nb_annees + 2)] - ((historique_c2[(nb_annees + 2)] - historique_c2[(nb_annees +1)]) / 30), col = "red")
+         y1 = historique_c2[(nb_annees + 2)] - ((historique_c2[(nb_annees + 2)] - historique_c2[(nb_annees + 1)]) / 30), col = "red")
 
 plot(c(0:nb_annees), historique_nb_oiseaux3, xlab = "Année", ylab = "Nombre d'oiseaux", type = "b")
 if (historique_c3[(nb_annees + 2)] > 0) {
-  ylim = c(min(historique_c3), historique_c3[(nb_annees + 2)])
+  ylim <- c(min(historique_c3), historique_c3[(nb_annees + 2)])
 } else {
-  ylim = c(historique_c3[(nb_annees + 2)], 0)
+  ylim <- c(min(historique_c3[(nb_annees + 2)], min(historique_c3)), 0)
 }
-plot(c(0:nb_annees), historique_c3[1:(nb_annees +1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b")
+plot(c(0:nb_annees), historique_c3[1:(nb_annees + 1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b")
 if (historique_c_bis3[nb_annees + 2] != historique_c3[nb_annees + 2]) {
-  points(c(0:nb_annees), historique_c_bis3[1:(nb_annees +1)], type = "b", col = "darkgreen")
+  points(c(0:nb_annees), historique_c_bis3[1:(nb_annees + 1)], type = "b", col = "darkgreen")
   points(20, historique_c_bis3[(nb_annees + 2)], col = "darkgreen", pch = 16)
 }
 points(20, historique_c3[(nb_annees + 2)], col = "red", pch = 16)
 segments(x0 = nb_annees,
-         y0 = historique_c3[(nb_annees +1)] + ((historique_c3[(nb_annees + 2)] - historique_c3[(nb_annees +1)]) / 30), 
+         y0 = historique_c3[(nb_annees + 1)] + ((historique_c3[(nb_annees + 2)] - historique_c3[(nb_annees + 1)]) / 30),
          x1 = nb_annees,
-         y1 = historique_c3[(nb_annees + 2)] - ((historique_c3[(nb_annees + 2)] - historique_c3[(nb_annees +1)]) / 30), col = "red")
+         y1 = historique_c3[(nb_annees + 2)] - ((historique_c3[(nb_annees + 2)] - historique_c3[(nb_annees + 1)]) / 30), col = "red")
 
 plot(c(0:nb_annees), historique_nb_oiseaux4, xlab = "Année", ylab = "Nombre d'oiseaux", type = "b")
 if (historique_c4[(nb_annees + 2)] > 0) {
-  ylim = c(min(historique_c4), historique_c4[(nb_annees + 2)])
+  ylim <- c(min(historique_c4), historique_c4[(nb_annees + 2)])
 } else {
-  ylim = c(historique_c4[(nb_annees + 2)], 0)
+  ylim <- c(min(historique_c4[(nb_annees + 2)], min(historique_c4)), 0)
 }
-plot(c(0:nb_annees), historique_c4[1:(nb_annees +1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b")
+plot(c(0:nb_annees), historique_c4[1:(nb_annees + 1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b")
 if (historique_c_bis4[nb_annees + 2] != historique_c4[nb_annees + 2]) {
-  points(c(0:nb_annees), historique_c_bis4[1:(nb_annees +1)], type = "b", col = "darkgreen")
+  points(c(0:nb_annees), historique_c_bis4[1:(nb_annees + 1)], type = "b", col = "darkgreen")
   points(20, historique_c_bis4[(nb_annees + 2)], col = "darkgreen", pch = 16)
 }
 points(20, historique_c4[(nb_annees + 2)], col = "red", pch = 16)
 segments(x0 = nb_annees,
-         y0 = historique_c4[(nb_annees +1)] + ((historique_c4[(nb_annees + 2)] - historique_c4[(nb_annees +1)]) / 30), 
+         y0 = historique_c4[(nb_annees + 1)] + ((historique_c4[(nb_annees + 2)] - historique_c4[(nb_annees + 1)]) / 30),
          x1 = nb_annees,
-         y1 = historique_c4[(nb_annees + 2)] - ((historique_c4[(nb_annees + 2)] - historique_c4[(nb_annees +1)]) / 30), col = "red")
+         y1 = historique_c4[(nb_annees + 2)] - ((historique_c4[(nb_annees + 2)] - historique_c4[(nb_annees + 1)]) / 30), col = "red")
 ```
 
 On voit que la politique 1 (qui consiste a favoriser les naissances) à l'air, sur ces quelques exemples, d'arriver moins souvent à l'extinction de l'espèce en favorisant le nombre d'indivudus et d'améliorer le gain. Là où l'espèce s'éteint quand même, on a une perte légerement moindre si on arrête la protection et les coûts qui vont avec.
@@ -600,7 +602,7 @@ alpha0 <- 5
 alpha1 <- 0.1
 proba_d <- 0.45
 proba_b <- 0.5
-nb_boucles <- 1000
+nb_boucles <- 1000000
 p <- matrix(nrow = 3, ncol = nb_boucles)
 
 for (ii in 1:nb_boucles) {
@@ -656,14 +658,14 @@ v[3] <- (mean((p[3, ])^2) - mean(p[3, ])^2) / (nb_boucles - 1)
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-print("IC")
+print("IC à 95%")
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 print(rowMeans(p) - 1.96 * sqrt(v))
 print(rowMeans(p) + 1.96 * sqrt(v))
 print("Différence minimale entre les 2 coûts:")
-print(rowMeans(p)[1] + 1.96 * sqrt(v)[1] - (rowMeans(p) - 1.96 * sqrt(v))[2])
+print(rowMeans(p)[2] - 1.96 * sqrt(v)[2] - (rowMeans(p) + 1.96 * sqrt(v))[1])
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -676,12 +678,12 @@ for (i in 1:nb_boucles) {
   }
 }
 print("Taux de survie:")
-cat(a2 / nb_boucles, "%")
+cat(a2 / nb_boucles * 100, "%")
 print("Nombre moyen d'oiseaux quand l'espèce a survécu:")
 mean(r)
 ```
 
-On a ici un taux de survie 15% plus élevé que pour la politique 0. Parmi les fois où les oiseaux survivent, on a en moyenne 12 oiseaux de plus, soit 5 de plus qu'avant. Le gain est positif et on a 2,5 fois plus d'oiseaux en moyenne.
+On a ici un taux de survie `r a2 / nb_boucles * 100`%, ce qui est plus élevé que pour la politique 0. Parmi les fois où les oiseaux survivent, on a en moyenne `r round(mean(r))` oiseaux, soit plus qu'avant également.
 
 \newpage
 
@@ -745,23 +747,23 @@ par(mfrow = c(1, 2))
 plot(c(0:nb_annees), historique_nb_oiseaux, main = "Nombre d'oiseaux en fonction des
      années", cex.main = 0.7, xlab = "Année", ylab = "Nombre d'oiseaux", type = "b")
 if (historique_c[(nb_annees + 2)] > 0) {
-  ylim = c(min(historique_c), historique_c[(nb_annees + 2)])
+  ylim <- c(min(historique_c), historique_c[(nb_annees + 2)])
 } else {
-  ylim = c(historique_c[(nb_annees + 2)], 0)
+  ylim <- c(min(historique_c[(nb_annees + 2)], min(historique_c)), 0)
 }
-plot(c(0:nb_annees), historique_c[1:(nb_annees +1)], ylim = ylim, main = "Coût en
+plot(c(0:nb_annees), historique_c[1:(nb_annees + 1)], ylim = ylim, main = "Coût en
      fonction des années", cex.main = 0.7, xlab = "Année", ylab = "Coût", type = "b")
 if (historique_c_bis[nb_annees + 2] != historique_c[nb_annees + 2]) {
-  points(c(0:nb_annees), historique_c_bis[1:(nb_annees +1)], type = "b", col = "darkgreen")
+  points(c(0:nb_annees), historique_c_bis[1:(nb_annees + 1)], type = "b", col = "darkgreen")
   points(20, historique_c_bis[(nb_annees + 2)], col = "darkgreen", pch = 16)
 }
 points(20, historique_c[(nb_annees + 2)], col = "red", pch = 16)
 segments(x0 = nb_annees,
-         y0 = historique_c[(nb_annees +1)] + ((historique_c[(nb_annees + 2)] -
-                                                 historique_c[(nb_annees +1)]) / 30), 
+         y0 = historique_c[(nb_annees + 1)] + ((historique_c[(nb_annees + 2)] -
+                                                 historique_c[(nb_annees + 1)]) / 30),
          x1 = nb_annees,
          y1 = historique_c[(nb_annees + 2)] - ((historique_c[(nb_annees + 2)] -
-                                                  historique_c[(nb_annees +1)]) / 30),
+                                                  historique_c[(nb_annees + 1)]) / 30),
          col = "red")
 ```
 
@@ -890,54 +892,54 @@ historique_c_bis4[nb_annees + 2] <- c1
 par(mfrow = c(3, 2))
 plot(c(0:nb_annees), historique_nb_oiseaux2, xlab = "Année", ylab = "Nombre d'oiseaux", type = "b")
 if (historique_c2[(nb_annees + 2)] > 0) {
-  ylim = c(min(historique_c2), historique_c2[(nb_annees + 2)])
+  ylim <- c(min(historique_c2), historique_c2[(nb_annees + 2)])
 } else {
-  ylim = c(historique_c2[(nb_annees + 2)], 0)
+  ylim <- c(min(historique_c2[(nb_annees + 2)], min(historique_c2)), 0)
 }
-plot(c(0:nb_annees), historique_c2[1:(nb_annees +1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b")
+plot(c(0:nb_annees), historique_c2[1:(nb_annees + 1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b")
 if (historique_c_bis2[nb_annees + 2] != historique_c2[nb_annees + 2]) {
-  points(c(0:nb_annees), historique_c_bis2[1:(nb_annees +1)], type = "b", col = "darkgreen")
+  points(c(0:nb_annees), historique_c_bis2[1:(nb_annees + 1)], type = "b", col = "darkgreen")
   points(20, historique_c_bis2[(nb_annees + 2)], col = "darkgreen", pch = 16)
 }
 points(20, historique_c2[(nb_annees + 2)], col = "red", pch = 16)
 segments(x0 = nb_annees,
-         y0 = historique_c2[(nb_annees +1)] + ((historique_c2[(nb_annees + 2)] - historique_c2[(nb_annees +1)]) / 30), 
+         y0 = historique_c2[(nb_annees + 1)] + ((historique_c2[(nb_annees + 2)] - historique_c2[(nb_annees + 1)]) / 30),
          x1 = nb_annees,
-         y1 = historique_c2[(nb_annees + 2)] - ((historique_c2[(nb_annees + 2)] - historique_c2[(nb_annees +1)]) / 30), col = "red")
+         y1 = historique_c2[(nb_annees + 2)] - ((historique_c2[(nb_annees + 2)] - historique_c2[(nb_annees + 1)]) / 30), col = "red")
 
 plot(c(0:nb_annees), historique_nb_oiseaux3, xlab = "Année", ylab = "Nombre d'oiseaux", type = "b")
 if (historique_c3[(nb_annees + 2)] > 0) {
-  ylim = c(min(historique_c3), historique_c3[(nb_annees + 2)])
+  ylim <- c(min(historique_c3), historique_c3[(nb_annees + 2)])
 } else {
-  ylim = c(historique_c3[(nb_annees + 2)], 0)
+  ylim <- c(min(historique_c3[(nb_annees + 2)], min(historique_c3)), 0)
 }
-plot(c(0:nb_annees), historique_c3[1:(nb_annees +1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b")
+plot(c(0:nb_annees), historique_c3[1:(nb_annees + 1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b")
 if (historique_c_bis3[nb_annees + 2] != historique_c3[nb_annees + 2]) {
-  points(c(0:nb_annees), historique_c_bis3[1:(nb_annees +1)], type = "b", col = "darkgreen")
+  points(c(0:nb_annees), historique_c_bis3[1:(nb_annees + 1)], type = "b", col = "darkgreen")
   points(20, historique_c_bis3[(nb_annees + 2)], col = "darkgreen", pch = 16)
 }
 points(20, historique_c3[(nb_annees + 2)], col = "red", pch = 16)
 segments(x0 = nb_annees,
-         y0 = historique_c3[(nb_annees +1)] + ((historique_c3[(nb_annees + 2)] - historique_c3[(nb_annees +1)]) / 30), 
+         y0 = historique_c3[(nb_annees + 1)] + ((historique_c3[(nb_annees + 2)] - historique_c3[(nb_annees + 1)]) / 30),
          x1 = nb_annees,
-         y1 = historique_c3[(nb_annees + 2)] - ((historique_c3[(nb_annees + 2)] - historique_c3[(nb_annees +1)]) / 30), col = "red")
+         y1 = historique_c3[(nb_annees + 2)] - ((historique_c3[(nb_annees + 2)] - historique_c3[(nb_annees + 1)]) / 30), col = "red")
 
 plot(c(0:nb_annees), historique_nb_oiseaux4, xlab = "Année", ylab = "Nombre d'oiseaux", type = "b")
 if (historique_c4[(nb_annees + 2)] > 0) {
-  ylim = c(min(historique_c4), historique_c4[(nb_annees + 2)])
+  ylim <- c(min(historique_c4), historique_c4[(nb_annees + 2)])
 } else {
-  ylim = c(historique_c4[(nb_annees + 2)], 0)
+  ylim <- c(min(historique_c4[(nb_annees + 2)], min(historique_c4)), 0)
 }
-plot(c(0:nb_annees), historique_c4[1:(nb_annees +1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b")
+plot(c(0:nb_annees), historique_c4[1:(nb_annees + 1)], ylim = ylim, xlab = "Année", ylab = "Coût", type = "b")
 if (historique_c_bis4[nb_annees + 2] != historique_c4[nb_annees + 2]) {
-  points(c(0:nb_annees), historique_c_bis4[1:(nb_annees +1)], type = "b", col = "darkgreen")
+  points(c(0:nb_annees), historique_c_bis4[1:(nb_annees + 1)], type = "b", col = "darkgreen")
   points(20, historique_c_bis4[(nb_annees + 2)], col = "darkgreen", pch = 16)
 }
 points(20, historique_c4[(nb_annees + 2)], col = "red", pch = 16)
 segments(x0 = nb_annees,
-         y0 = historique_c4[(nb_annees +1)] + ((historique_c4[(nb_annees + 2)] - historique_c4[(nb_annees +1)]) / 30), 
+         y0 = historique_c4[(nb_annees + 1)] + ((historique_c4[(nb_annees + 2)] - historique_c4[(nb_annees + 1)]) / 30),
          x1 = nb_annees,
-         y1 = historique_c4[(nb_annees + 2)] - ((historique_c4[(nb_annees + 2)] - historique_c4[(nb_annees +1)]) / 30), col = "red")
+         y1 = historique_c4[(nb_annees + 2)] - ((historique_c4[(nb_annees + 2)] - historique_c4[(nb_annees + 1)]) / 30), col = "red")
 ```
 
 On voit que la politique 2 (qui consiste à protéger les individus existants) à l'air, sur ces quelques exemples, de non seulement arriver moins souvent à l'extinction, mais aussi d'avoir un fort nombre d'individus à la fin.
@@ -1008,14 +1010,14 @@ v[3] <- (mean((p[3, ])^2) - mean(p[3, ])^2) / (nb_boucles - 1)
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-print("IC")
+print("IC à 95%")
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 print(rowMeans(p) - 1.96 * sqrt(v))
 print(rowMeans(p) + 1.96 * sqrt(v))
 print("Différence minimale entre les 2 coûts:")
-print(rowMeans(p)[1] + 1.96 * sqrt(v)[1] - (rowMeans(p) - 1.96 * sqrt(v))[2])
+print(rowMeans(p)[2] - 1.96 * sqrt(v)[2] - (rowMeans(p) + 1.96 * sqrt(v))[1])
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -1028,29 +1030,213 @@ for (i in 1:nb_boucles) {
   }
 }
 print("Taux de survie:")
-cat(a3 / nb_boucles, "%")
+cat(a3 / nb_boucles * 100, "%")
 print("Nombre moyen d'oiseaux quand l'espèce a survécu:")
 mean(r)
 ```
 
-On voit que le taux de survie crève le plafond (environ 60%) et est de 22 individus quand l'espèce survit. Le gain est positif et on a 6,5 fois plus d'oiseaux en moyenne.
+On voit que le taux de survie est bien supérieur aux précédents (`r a3 / nb_boucles * 100`%) et on a `r round(mean(r))` individus en moyenne quand l'espèce survit.
 
 ## Question 10
 
-On cherche le nombre d'oiseaux maximal qu'on peut avoir au bout de 20 ans, en partant de 2.
+On cherche le nombre d'oiseaux maximal qu'on peut avoir au bout de 20 ans, en partant de 2 individus au départ.
 
 C'est comme si on avait une probabilité de 0 de mourir et de 1 de naître.
 
-Donc chaque année, chaque oiseau se "débouble". On a donc 2^21^ = 2.097.152 oiseaux au bout de 20 ans.
+Donc chaque année, chaque oiseau se "dédouble". On a donc 2^21^ = 2.097.152 oiseaux au bout de 20 ans.
 
 ## Question 11
 
-A cause de l'explosion combinatoire du nombre d'oiseaux, il paraît difficile de faire tourner l'algorithme avec autant de possibilité, sans utiliser des techniques de calculs optimisées et/ou un ordinateur puissant en utilisant les multiples coeurs disponibles en parallèle, en un temps raisonnable. 
+A cause de l'explosion combinatoire du nombre d'oiseaux, il paraît difficile de faire tourner l'algorithme avec autant de possibilité, sans utiliser des techniques de calculs optimisées et/ou un ordinateur puissant en utilisant les multiples cœurs disponibles en parallèle, en un temps raisonnable. 
 
-La matrice de transition contiendrait presque 13.2 millard d'éléments, qui occuperait environ 6.6 To d'espace (en prenant comme base de calcul pour l'espace requis (selon R) une matrice de 15 Millions d'éléments qui prends 60 MB = 7.5 Mo) . C'est beaucoup trop.
+La matrice de transition contiendrait presque 13.2 millard d'éléments (3 fois une matrice carrée de taille 2^21^+1), qui occuperait environ 6.6 To d'espace (en prenant comme base de calcul pour l'espace requis (selon RStudio) une matrice de 15 Millions d'éléments qui prends 60 MB = 7.5 Mo) . C'est beaucoup trop.
 
 ## Question 12
 
+On cherche M pour réduire le nombre d'état possible. 
+Cela va servir pour regrouper les cas possibles mais extrêmement rares.
 
+On pourrait chercher M en faisant tourner la simulation avec la politique 2 (celle qui a le meilleur taux de survie et le plus d'oiseaux en moyenne) un certain nombre de fois (comme pour Monte Carlo) et en prenant la valeur maximale qui apparaît, mais cette méthode est très sensible à l'aléatoire. On pourrait tomber sur un cas exceptionnel qui gonflerait notre M et augmenterait nos durées de calculs pour pas grand chose. (On rappelle que la taille de matrice grossit à 3 fois la taille de M au carré.)
+
+On va donc prendre une valeur de M tel que le nombre d'individus au bout de 20 ans soit inférieur à M dans 99,99% des cas. Le choix du 99.99% est "un peu" arbitraire. On ne prends pas le "classique" 95% pour ne pas être trop restrictif vers le bas. De même, on ne va chercher l'intervalle que parmi les fois où l'espèce ne s'est pas éteinte pour ne pas tirer l'estimation vers le bas.
+
+```{r message=FALSE, warning=FALSE}
+
+# Variables de bases, inutile de calculer les coûts.
+nb_annees <- 20
+proba_d <- 0.35
+proba_b <- 0.45
+nb_boucles <- 1000000
+p <- matrix(nrow = 1, ncol = nb_boucles)
+a <- 0
+r <- c()
+M <- 0
+
+for (ii in 1:nb_boucles) {
+
+  nb_oiseaux <- 2
+
+  for (i in 2:(nb_annees + 1)) {
+    if (nb_oiseaux != 0) {
+      for (x in 1:nb_oiseaux) {
+        d <- runif(1, min = 0, max = 1)
+        b <- runif(1, min = 0, max = 1)
+        if (d < proba_d) {
+          nb_oiseaux <- nb_oiseaux - 1
+        }
+        if (b < proba_b) {
+          nb_oiseaux <- nb_oiseaux + 1
+        }
+      }
+    }
+  }
+  p[1, ii] <- nb_oiseaux
+}
+
+for (i in 1:nb_boucles) {
+  if (p[i] > 0) {
+    a <- a + 1
+    r <- c(r, p[i])
+  }
+}
+
+max <- max(p)
+b <- a
+
+while (b / a > 0.0001) {
+  b <- a
+  M <- M + 1
+  for (i in 1:a) {
+    if (r[i] <= M) {
+      b <- b - 1
+    }
+  }
+}
+```
+
+On a donc évaluer notre M à `r M`. Le max aurait été de `r max`.
 
 ## Question 13
+
+On va donc construire trois matrices carrées de taille M+1 (une pour chaque actions) remplie de la probabilité de passer d'un certain nombre d'oiseaux à un autre en particulier, de 0 à M (M ou plus) oiseaux.
+
+```{r message=FALSE, warning=FALSE}
+proba_b <- c(0.45, 0.5,  0.45)
+proba_d <- c(0.45, 0.45, 0.35)
+
+transition_density  <-  function(population, action) {
+
+  result <- convolve(dbinom(0:population, population, proba_b[action]),
+                     dbinom(0:population, population, proba_d[action]), type = "open")
+  # Fait le produit de convolution des binomiales
+
+  result <- result[1:(M + 1)] # On s'assure que le vecteur fait la bonne taille
+  result[is.na(result)] <- 0  # et on replace les NA par des 0 si besoin.
+
+  result[M + 1] <- 1 - sum(result[1:M])
+  # On place tout le poids de la probabilité
+  # de toutes les populations supérieur à M à la fin.
+
+  result # Renvoie le résultat
+}
+
+# Matrices de transition
+Q <- array(0, dim <- c((M + 1), (M + 1), 3))
+
+# Ne rien faire : action 0
+q1 <- NULL
+for (i in 0:M) {
+  q1 <- c(q1, transition_density(i, 1))
+} # On crée M+1 vecteurs de taille M+1 les uns à la suite des autres,
+  # chacun correspondant à une loi de probabilité pour un nombre d'oiseaux en particulier.
+
+Q[, , 1] <- matrix(q1, nrow = (M + 1), byrow = TRUE)
+# On remplit ensuite la matrice avec le vecteur qu'on découpe en M+1 morceaux.
+
+
+
+# Augmentation de la fécondité : action 1
+q2 <- NULL
+for (i in 0:M) {
+  q2 <- c(q2, transition_density(i, 2))
+}
+
+Q[, , 2] <- matrix(q2, nrow = (M + 1), byrow = TRUE)
+
+# Diminution des décès : action 2
+q3 <- NULL
+for (i in 0:M) {
+  q3 <- c(q3, transition_density(i, 3))
+}
+
+Q[, , 3] <- matrix(q3, nrow = (M + 1), byrow = TRUE)
+```
+
+Voilà quelques exemples de matrices, pour l'action 1, 2 et 3 (respectivement les colonnes), en partant respectivement d'une population de base de 0, 1 et 2 oiseaux.
+La i^ème^ ligne correspond à la probabilité d'arriver à i-1 oiseaux.
+
+```{r message=FALSE, warning=FALSE}
+Q[1, 1:4, ]
+Q[2, 1:4, ]
+Q[3, 1:5, ]
+```
+
+\newpage
+
+## Question 14
+
+On reprend l'algorithme du cours et on le modifie pour nos besoins.
+
+```{r message=FALSE, warning=FALSE}
+N <- 20
+rec <- matrix(c(0, -0.1, -0.2), nrow = 1) # Récompense instantanée
+
+V <- matrix(-1, nrow = M + 1, ncol = N + 1)
+maximiseur <- matrix(-1, nrow = M + 1, ncol = N)
+# On remplit les deux matrices de bases de -1 pour faciliter la lecture
+# et ne pas confondre un 0 de base avec l'action 0.
+
+V[, 1] <- (0:M) # Récompense terminale
+V[1, 1] <- -5   # De même
+
+for (n in 1:N) {
+  for (k in 1:(M + 1)) {
+    if (k <= 2^(N - n + 1) + 1) {
+      tmp <- NULL
+      tmp <- rec + V[, n] %*% Q[k, , ]
+      v <- max(tmp)
+      f <- which.max(tmp)
+      V[k, n + 1] <- v
+      maximiseur [k, n] <- f - 1
+    }
+  }
+}
+```
+
+## Question 15
+
+On lit la performance optimale pour $X_{0}$ = 2 en V[3,21], elle est de `r V[3,21]`.  
+La performance optimale varie assez peu tant qu'on reste au dessus de 100 pour M. Elle tend, de manière très lente, vers une valeur limite supérieur qu'on pourrait calculer sans l'approximation avec M.
+
+Elle correspond au coût de ma politique 2 modifiée où on arrête les frais si l'espèce disparaît, aux quelques détails près sur les cas rares.
+
+## Question 16
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+min <- 0
+for (i in 50:M) {
+  if (min == 0) {
+    if (maximiseur[i, 14] == 1) {
+      min <- i
+    }
+  }
+}
+```
+
+Une lecture approfondie de la matrice "maximiseur" permet de confirmer que la politique 2 modifiée (diminution des décès) est optimale tant que le nombre d'oiseaux reste en dessous de la centaine.  
+Au-delà de ce nombre, qui arrive après la 5^ème^ année et qui est rare, moins de 1 chance sur 500 selon quelques rapides estimations par le simulateur, il est plus rentable de favoriser les naissances, voire de ne plus rien faire à partir d'un nombre d'oiseaux plus élevé.  
+Ce seuil pour faire l'action 0 ou 1 est relevé chaque année et disparaît même lors des dernières années. 
+Il est impossible de donner une règle précise dans les cas rares, le mieux est de lire directement sur la matrice au cas par cas, selon le nombre d'oiseaux et l'année.  
+Enfin, on peut remarquer que changer d'action ne réduit que très peu le coût, de 3 au maximum sur les 20 ans, ce qui est très peu face à la récompense de plus de `r round(V[min,14])` oiseaux attendus en moyenne à partir du moment où on peut faire une autre action (autre que ne rien faire car l'espèce a disparu.) (au maximiseur[`r min`,14], endroit où apparaît la 1^ère^ possibilité de faire une autre action.)
+
+Etant donné que notre but premier est de sauvegarder l'espèce, il est cohérent que la décision soit de diminuer le nombre de décès même quand il y a beaucoup d'oiseaux, le coût légèrement plus élevé est largement compensé par le nombre d'oiseaux et l'esquive de la perte de 5 si l'espèce disparaissait.

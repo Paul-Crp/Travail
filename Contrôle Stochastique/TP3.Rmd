@@ -313,8 +313,8 @@ print(rowMeans(p) - 1.96 * sqrt(v))
 print(rowMeans(p) + 1.96 * sqrt(v))
 ```
 
-On peut aussi calculer le nombre de fois où l'espèce a disparu, ce que l'on voudrait éviter à tout prix (enfin, au coût de 5 en l'occurence).  
-On peut aussi calculer que le nombre moyen d'oiseaux les fois où l'espèce n'a pas disparu, pour comparer avec les autres politiques, ce qui en fait un taux de survie.
+On peut aussi calculer le nombre de fois où l'espèce n'a pas disparu, ce que l'on voudrait éviter à tout prix (enfin, au prix de 5 en l'occurrence), ce qui en fait un taux de survie.  
+On peut aussi calculer que le nombre moyen d'oiseaux les fois où l'espèce n'a pas disparu, pour comparer avec les autres politiques.
 
 ```{r message=FALSE, warning=FALSE}
 a1 <- 0
@@ -323,13 +323,13 @@ for (i in 1:nb_boucles) {
   if (p[2, i] > 0) {
     a1 <- a1 + 1
     r <- c(r, p[2, i])
-  }
+  } # On compte le nombre de fois où l'espèce ne s'est pas éteinte.
 }
 a1 / nb_boucles * 100
 mean(r)
 ```
 
-On voit que le taux de survie est à peine de `r a1 / nb_boucles * 100`%, ce qui est très faible. Cela entraîne le fort coût de 5 dans `r 100 - a1 / nb_boucles * 100`% des cas. On voit bien l'influence importante de l'extinction de l'espèce, qui est irréversible. De plus, on n'a que `r round(mean(r))` oiseaux en moyenne quand l'espèce survit, ce qui est très peu.
+On voit que le taux de survie est de `r a1 / nb_boucles * 100`%, ce qui est très faible. Cela entraîne le fort coût de 5 dans `r 100 - a1 / nb_boucles * 100`% des cas. On voit bien l'influence de l'extinction de l'espèce, qui est irréversible. De plus, on n'a que `r round(mean(p[2, ]))` oiseaux en moyenne et `r round(mean(r))` quand l'espèce survit, ce qui est peu. La perte est de `r mean(p[1, ])` en moyenne.
 
 ## Question 4
 
@@ -664,7 +664,7 @@ print("IC à 95%")
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 print(rowMeans(p) - 1.96 * sqrt(v))
 print(rowMeans(p) + 1.96 * sqrt(v))
-print("Différence minimale entre les 2 coûts:")
+print("Différence minimale moyenne entre les 2 coûts:")
 print(rowMeans(p)[2] - 1.96 * sqrt(v)[2] - (rowMeans(p) + 1.96 * sqrt(v))[1])
 ```
 
@@ -683,7 +683,7 @@ print("Nombre moyen d'oiseaux quand l'espèce a survécu:")
 mean(r)
 ```
 
-On a ici un taux de survie `r a2 / nb_boucles * 100`%, ce qui est plus élevé que pour la politique 0. Parmi les fois où les oiseaux survivent, on a en moyenne `r round(mean(r))` oiseaux, soit plus qu'avant également.
+On a ici un taux de survie `r a2 / nb_boucles * 100`%, ce qui est plus élevé que pour la politique 0. On a `r round(mean(p[1, ]))` oiseaux en moyenne Parmi les fois où les oiseaux survivent, on a en moyenne `r round(mean(r))` oiseaux, soit plus qu'avant également. Le coût est maintenant positif, il est de `r mean(p[1, ])`.
 
 \newpage
 
@@ -1016,7 +1016,7 @@ print("IC à 95%")
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 print(rowMeans(p) - 1.96 * sqrt(v))
 print(rowMeans(p) + 1.96 * sqrt(v))
-print("Différence minimale entre les 2 coûts:")
+print("Différence minimale moyenne entre les 2 coûts:")
 print(rowMeans(p)[2] - 1.96 * sqrt(v)[2] - (rowMeans(p) + 1.96 * sqrt(v))[1])
 ```
 
@@ -1035,7 +1035,7 @@ print("Nombre moyen d'oiseaux quand l'espèce a survécu:")
 mean(r)
 ```
 
-On voit que le taux de survie est bien supérieur aux précédents (`r a3 / nb_boucles * 100`%) et on a `r round(mean(r))` individus en moyenne quand l'espèce survit.
+On voit que le taux de survie est bien supérieur aux précédents (`r a3 / nb_boucles * 100`%) et on a `r round(mean(p[3, ]))` individus en moyenne ou `r round(mean(r))` quand l'espèce survit. Le coût est maintenant de `r mean(p[1, ])`, ce qui est très largement supérieur aux 2 autres.
 
 ## Question 10
 

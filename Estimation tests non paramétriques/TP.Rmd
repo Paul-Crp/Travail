@@ -1,0 +1,543 @@
+---
+title: "Untitled"
+output: pdf_document
+date: "2023-05-03"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#TP1
+
+```{r EXO 1}
+sleep = sleep
+
+attach(sleep)
+
+boxplot(extra ~ group)
+
+shapiro.test(extra[group == 1])
+shapiro.test(extra[group == 2])
+
+bartlett.test(extra ~ group)
+
+t.test(extra[group == 1], extra[group == 2], alternative = "less")
+t.test(extra[group == 1], extra[group == 2], alternative = "less", var.equal = TRUE)
+
+
+```
+
+```{r EXO 2}
+
+Gr1 = c(35, 40, 12, 15, 21, 14, 46, 10, 28, 48, 16, 30, 32, 48, 31, 22, 12, 39, 19, 25)
+
+Gr2 = c(2, 27, 38, 31, 1, 19, 1, 34, 3, 1, 2, 3, 2, 1, 2, 1, 3, 29, 37, 2)
+
+shapiro.test(Gr1)
+shapiro.test(Gr2) #Pas de normalité (p <<< 0.05)
+
+c(Gr1,Gr2)
+c(rep(1,20),rep(2,20))
+
+bartlett.test(c(Gr1,Gr2)~c(rep(1,20),rep(2,20)))
+
+t.test(Gr1,Gr2,var.equal=T,alternative="greater")
+# p-value pas fiable, par le cours, on calcule qu'elle est de 0.0009, presque le double.
+```
+
+```{r EXO 3}
+
+F1 = c(-0.7, -0.3, -0.4, -0.7, 0.0, 0.1, -0.3,
+-0.7, 0.1, -0.7)
+
+Fn1 = ecdf(F1)
+plot(Fn1,col="red",xlim=c(-2,2))
+
+data2=c( 0.0, -0.2, -0.5, 1.0, 1.5)
+Fn2=ecdf(data2)
+
+plot(Fn2,col="blue",xlim=c(-2,2),add=T) # pour ajouter la ecdf au graphique précédent
+
+F = function(z) Fn1(z)-Fn2(z) # pour calculer Fn1-Fn2
+plot(seq(-3,7,by=0.01), F(seq(-3,7,by=0.01)) ,type="l")
+
+```
+
+#TP2
+
+```{r EXO 1 2 3 4}
+
+Data1 = matrix(data = c(12, 3, 5, 10), nrow = 2)
+
+fisher.test(Data1,alternative="greater")
+
+Data2 = matrix(data = c(12, 5, 3, 10), nrow = 2)
+
+chisq.test(Data2)
+
+fisher.test(Data2,alternative="greater")
+
+#Voir papier
+```
+
+```{r EXO 5}
+
+Data3 = matrix(data = c(100, 80, 60, 80, 110, 80), nrow = 3)
+# Deux Populations distinctes
+
+fisher.test(Data3,alternative="two-sided") #Ils ont des habitudes différentes.
+
+chisq.test(Data3) #Comme N est très grand, les p values des deux tests sont proches.
+```
+
+```{r EXO 6}
+
+Data4 = matrix(data = c(91, 35, 30, 31, 94, 69), nrow = 3)
+# Une Unique population
+
+chisq.test(Data4) #Il y a dépendance entre origine et date.
+```
+
+```{r EXO 7}
+
+library(fmsb)
+
+Data5 = matrix(data = c(66, 75, 58, 71, 125, 87, 39, 42, 71), nrow = 3)
+# Une Unique population
+
+Kappa.test(Data5)
+
+# Contre le X^2 qui ne teste que la dépendance, mais ça ne répond pas vraiment...
+
+chisq.test(Data5)
+```
+
+```{r EXO 8}
+
+Data6 = matrix(data = c(15, 35, 24, 25, 26, 24, 24, 29, 31, 19, 32, 17), nrow = 2)
+# Six populations
+
+# fisher.test(Data6)
+
+# Donne une erreur car trop complexe, il faut rajouter "simulate.p.value=TRUE" en faisant une simulation par Monte Carlo
+
+fisher.test(Data6, simulate.p.value = TRUE)
+
+#On rejette H0
+
+chisq.test(Data6)
+
+# Normalement, c'est pour l'indépendance entre deux quantités aléatoires sur les individus d'un échantillon 
+
+```
+
+```{r EXO 9}
+
+Data7 = matrix(data = c(991, 11638, 1478, 23567), nrow = 2)
+# On a toute la population, pas d'aléatoire, on a plus de gauchers garcons que fille dans cette académie.
+
+#####fisher.test(Data7, alternative = "greater")
+```
+
+```{r EXO 10}
+
+var(rhyper(10000000, 10, 13, 2))
+
+var(rnorm(10000000, 2, 10/(10+13)))
+
+```
+
+#TP3
+
+```{r EXO 1}
+
+Direct = c(20.1, 23.5, 4.0, 21.6, 15.1, 20.3, 26.6, 21.9, -9.4, 4.2, -1.6, 24.9)
+TV = c(6.2, 15.4, 24.0, 4.7, 27.1, 17.4, 14.1, 31.2, 12.6, 9.4, 17.1, 23.4)
+
+shapiro.test(Direct) #On n'a pas la normalité
+shapiro.test(TV)
+bartlett.test(c(Direct,TV) ~ c(rep(1, 12), rep(2,12)))
+
+wilcox.test(Direct, TV) #On ne rejette pas l'égalité
+
+HDirect = c(10.5, 5.8, 20.6, -9.8, -5.1, 1.1, 28.6, 16.8, 26.1, 24.1, 3.2, -5.5, 43.4, 4.3, 17., 6.1, -4.8)
+HTV = c(29.4, -7.7, 18.9, 15.6, 20.4, 18.8, 2., 21.5, 6.6, 17.5, 35.4, 20.8, 30.7, 40.1, 9.9, 21.8, 15.9, 19.7, 19.1,
+2.2, 26., 33.3, 26.3, 24.6, 10.3, 3.1, 6.9, 17.9, 27.7, 12.8, 11.9, 33.8, -5.2, 4.6, 30.2, 38.5, 22.3)
+
+shapiro.test(HDirect)
+shapiro.test(HTV)
+
+t.test(HDirect, HTV) #On ne rejette pas
+
+wilcox.test(HDirect, HTV) #On rejette ??
+
+bartlett.test(c(HDirect,HTV) ~ c(rep(1, 17), rep(2,37)))
+
+t.test(HDirect, HTV, var.equal = T) # Variance égale, on rejette maintenant pour les deux.
+
+
+
+wilcox.test(Direct, HDirect)
+wilcox.test(TV, HTV)
+# On ne rejette pas
+```
+
+```{r EXO 2}
+
+ToothGrowth = ToothGrowth
+attach(ToothGrowth)
+
+shapiro.test(len[supp == "VC"])
+shapiro.test(len[supp == "OJ"]) #On rejette la normalité
+
+bartlett.test(len ~ supp)
+
+wilcox.test(len~supp,alternative = "greater")
+```
+
+```{r EXO 3}
+
+datawilcox=rwilcox(10000, 10, 10)
+
+mean(datawilcox)
+var(datawilcox)
+
+datanorm = rnorm(10000, 50, sqrt(175))
+
+Fn=ecdf(datawilcox)
+Gn=ecdf(datanorm)
+plot(Fn,col="red",xlim=c(0,100)) # pour bien centrer la ecdf sur le graphique
+plot(Gn,col="blue",xlim=c(0,100),add=T)
+
+library(moments)
+
+skewness(datawilcox)
+kurtosis(datawilcox)
+
+skewness(datanorm)
+kurtosis(datanorm)
+```
+
+#TP4
+
+```{r EXO 1}
+
+# 5 Populations
+
+attach(Traffic1)
+
+boxplot(Time ~ Trajet)
+
+shapiro.test(Time[Trajet == "Trajet1"]) #Pas super mais > 0.05
+shapiro.test(Time[Trajet == "Trajet2"])
+bartlett.test(Time[1:100] ~ c(rep(1, 50), rep(2,50)))
+
+#t.test(Time[Trajet == "Trajet1"], Time[Trajet == "Trajet2"], var.equal = T, alternative = "greater")
+
+wilcox.test(Time[Trajet == "Trajet1"], Time[Trajet == "Trajet2"], alternative = "greater")
+
+wilcox.test(Time[Trajet == "Trajet1"], Time[Trajet == "Trajet5"], alternative = "two.sided") #Pas de différence au niveau 5%
+```
+
+```{r EXO 2}
+
+ca = c(12.9, 13.5, 12.8, 15.6, 17.2, 19.2, 12.6, 15.3, 14.4, 11.3)
+
+cb = c(13.8, 14.7, 13.0, 16.3, 17.9, 21.1, 13.1, 17.0, 17.1, 12.2)
+
+wilcox.test(ca, cb, alternative = "less")
+wilcox.test(ca, cb, alternative = "less", paired = T)
+
+
+shapiro.test(ca)
+shapiro.test(cb)
+bartlett.test(c(ca,cb) ~ c(rep(1, 10), rep(2, 10)))
+t.test(ca, cb, alternative = "less")
+t.test(ca, cb, alternative = "less", paired = T)
+
+wilcox.test(ca, cb, paired = T, alternative = "two.sided", conf.int = T)
+```
+
+```{r EXO 3}
+
+# On teste mu_B + 25 = mu_S VS mu_B + 25 < mu_S
+
+tbbmc <- data.frame(mother = 1:10,
+                    b = c(1928, 2549, 2825, 1924, 1628, 2175, 2114, 2621, 1843, 2541),
+                    s = c(2126, 2885, 2895, 1942, 1750, 2184, 2164, 2626, 2006, 2627))
+
+
+wilcox.test(tbbmc$b, tbbmc$s, paired = T, alternative = "less", mu = -25) #Le mu permet de décaler les secondes valeurs de 25
+```
+
+```{r EXO 4}
+
+wilcox.test(HDirect, HTV, alternative = "two.sided", conf.int = T)
+
+```
+
+```{r EXO 5}
+
+Xi = c(0, 2, 4)
+
+Yj = c(-1, 6, 7, 13)
+
+wilcox.test(Yj, Xi, alternative = "two.sided", conf.int = T)
+```
+
+```{r EXO 6}
+
+Data3
+
+chisq.test(Data3)
+
+Data3b = c(rep(0,100), rep(1,80), rep(2,60))
+Data3c = c(rep(0,80), rep(1,110), rep(2,80))
+
+wilcox.test(Data3b, Data3c, alternative = "less")
+
+```
+
+#TP5
+
+```{r EXO 1}
+
+#a)
+
+#a-i)
+
+#ToothGrowth
+
+library(pwr)
+
+pwr.t.test(d = 0.5, power = 0.9, sig.level = 0.05, alternative = "greater")
+
+pwr.t2n.test(n1 = 30, n2 = 30, d = 0.5, sig.level = 0.05, alternative = "greater")
+
+pwr.t2n.test(n1 = 40, n2 = 20, d = 0.5, sig.level = 0.05, alternative = "greater")
+
+pwr.t.test(d = 0.5, power = 0.8, sig.level = 0.05, alternative = "greater")
+
+pwr.t.test(d = 0.8, power = 0.8, sig.level = 0.05, alternative = "greater")
+
+pwr.t.test(d = 0.5, n = 60, sig.level = 0.05, alternative = "greater")
+
+pwr.t2n.test(n1 = 30, power = 0.8, d = 0.5, sig.level = 0.05, alternative = "greater")
+
+shapiro.test(len[supp == "VC"])
+shapiro.test(len[supp == "OJ"])
+
+library(wmwpow)
+wmwpowp(n = 30, m = 30, distn = "doublex", p = 0.7, sides = "less", alpha = 0.05)
+
+wilcox.test(len ~ supp, alternative = "greater")
+
+wilcox.test(len ~ c(rep(1,30), rep(0,30)), alternative = "greater")
+```
+
+```{r EXO 2}
+
+pwr.t.test(d=-0.8,power=0.95,sig.level=0.05,alternative="less",type="paired")
+
+AffA = c(12.9, 13.5, 12.8, 15.6, 17.2, 19.2, 12.6, 15.3, 14.4, 11.3)
+AffB = c(13.8, 14.7, 13.0, 16.3, 17.9, 21.1, 13.1, 17.0, 17.1, 12.2)
+
+shapiro.test(AffA)
+shapiro.test(AffB)
+shapiro.test(AffA - AffB)
+bartlett.test(c(AffA,AffB) ~ c(rep(0,10),rep(1,10)))
+
+t.test(AffA, AffB, alternative = "less", paired = T)
+t.test(AffA, AffB, alternative = "less", paired = T, var.equal = T)
+
+wilcox.test(AffA, AffB, alternative = "less", paired = T)
+```
+
+#TP 6
+
+```{r EXO 1}
+
+Bacsup4 = c(74.5, 75.0, 75.0, 73.5, 74.0, 68.5, 70.5, 70.5, 72.0, 73.5, 73.0, 70.5, 76.5, 69.0, 75.5, 69.0,74.0, 71.5, 75.0, 76.5, 76.0)
+Bac0entre3 = c(70.5, 73.5, 71.5, 74.0, 70.0, 68.5, 74.0, 71.0, 70.0, 74.5, 69.0, 71.5, 62.5, 74.5, 69.5, 66.0, 70.0, 69.5, 70.5, 63.0, 74.0, 71.5, 73.0)
+Bac = c(74.0, 74.5, 72.0, 72.0, 71.5, 71.0, 72.5, 69.0, 69.0, 69.0, 68.5, 64.5, 65.5, 58.0, 74.0, 74.0, 73.0,72.0, 71.5, 71.5, 71.5, 70.5, 69.5, 70.0, 68.5, 66.0, 66.5, 60.0)
+
+
+boxplot(Bacsup4, Bac0entre3, Bac)
+
+groupe <- rep(1:3, c(21,23,28))
+kruskal.test(c(Bacsup4,c(Bac0entre3,Bac))~groupe)
+pairwise.wilcox.test(c(Bacsup4,c(Bac0entre3,Bac)), groupe)
+```
+
+
+```{r EXO 2}
+A = c(5,4,4,1,3,5)
+B = c(7,4,3,2,6,2)
+C = c(6,7,9,8,7,6)
+
+kruskal.test(c(A,B,C)~rep(1:3,c(6,6,6)))
+pairwise.wilcox.test(c(A,B,C), rep(1:3,c(6,6,6)), alternative = "greater")
+
+wilcox.test(A,B, alternative = "less")
+wilcox.test(A,C, alternative = "less")
+wilcox.test(B,C, alternative = "less")
+
+p.adjust(c(0.5, 0.01403, 0.002386))
+```
+
+```{r EXO 3}
+
+A = c( 23.4, 24.4, 25.6, 24.9, 25.0, 26.2)
+B = c( 18.9, 21.1, 21.1, 22.1, 22.5, 23.5)
+C = c( 22.5, 22.9, 23.7, 24.0, 24.0, 24.5)
+D = c( 22.0, 19.9, 18.7, 21.0, 17.0, 19.5)
+
+boxplot(A, B, C, D)
+
+kruskal.test(c(A,B,C,D)~rep(1:4,c(6,6,6,6)))
+pairwise.wilcox.test(c(A,B,C,D), rep(1:4,c(6,6,6,6)))
+
+wilcox.test(D,B,alternative="less")
+
+```
+```{r EXO 8}
+
+test de la variance: ansari.test()
+
+p.adjust(c(,,,), method = "holm")
+
+ks.test()
+
+on peut faire le p.adjust() sur les p.values des ansari aussi.
+
+```
+
+#EX1
+
+```{r EXO 1}
+
+AffAbis = c(13.8, 13.5, 12.8, 15.6, 17.2, 19.2, 12.6, 15.3, 17.1, 11.3, 13.2)
+AffBbis = c(12.9, 14.7, 13.0, 16.3, 17.9, 21.1, 13.1, 17.0, 14.4, 12.2, 12.9)
+
+library(pwr)
+pwr.t.test(d=+0.7,power=0.95,sig.level=0.05,alternative="two.sided",type="paired")
+
+shapiro.test(AffAbis)
+shapiro.test(AffBbis)
+shapiro.test(AffAbis - AffBbis)
+bartlett.test(c(AffAbis,AffBbis) ~ c(rep(0,11),rep(1,11)))
+
+t.test(AffAbis, AffBbis, alternative = "less", paired = T)
+t.test(AffAbis, AffBbis, alternative = "less", paired = T, var.equal = T)
+
+wilcox.test(AffAbis, AffBbis, alternative = "two.sided", paired = T, conf.int = T)
+```
+
+```{r EXO 2}
+d = c(0, 0, 0, 1, 3, 5, 5)
+D = c(3, 3, 3, 1, 1, 2, 2)
+
+valeur de stat = 1 - sum(D^2-1)/(7^3-7)
+
+```
+
+
+```{r EXO 3}
+
+Data10 = matrix(data = c(4, 13, 5, 2, 8, 3, 3, 10), ncol = 2)
+
+fisher.test(Data10, alternative = "less")
+
+Data10bis = matrix(data = c(rep(0,4), rep(1,13), rep(2,5), rep(3,2), rep(4,8), rep(5,3), rep(6,3), rep(7,10), rep(0,24), rep(1,24)), ncol = 2)
+Data10bisbis = matrix(data = c(rep(0,4), rep(1,13), rep(2,5), rep(3,2), rep(0,8), rep(1,3), rep(2,3), rep(3,10), rep(0,24), rep(1,24)), ncol = 2)
+Data10bisbisbis = matrix(data = c(rep(0,4), rep(3,10)), ncol = 2)
+
+wilcox.test(Data10bisbis[,1], Data10bisbis[,2], alternative = "less")
+
+pairwise.wilcox.test(Data10bisbis[,1], Data10bisbis[,2], method="holm", alternative = "two.sided")
+
+
+
+```
+
+```{r EXO 4}
+
+Data11 = matrix(data = c(6, 4, 3, 2, 6, 2,
+                         6, 7, 9, 8, 7, 6), ncol = 2)
+
+fisher.test(Data11)
+
+wilcox.test(Data11[,1], Data11[,2], paired = T, conf.int = T)
+t.test(Data11[,1], Data11[,2], paired = T, conf.int = T)
+
+mean(Data11[,1])
+mean(Data11[,2])
+var(Data11[,1])
+var(Data11[,2])
+
+```
+
+```{r EXO 5}
+
+InsectSprays
+attach(InsectSprays)
+detach(InsectSprays)
+
+Data12 = matrix(data = c(InsectSprays[spray == "C" | spray == "D" | spray == "E",][,1]), ncol = 3)
+
+fisher.test(Data12, simulate.p.value = T)
+chisq.test(Data12)
+
+Data12bis = matrix(data = c(InsectSprays[spray == "C" | spray == "D" | spray == "E",][,1], rep(0, 12), rep(1, 12), rep(2, 12)), ncol = 2)
+
+Data12bisC = c(InsectSprays[spray == "C",][,1])
+Data12bisD = c(InsectSprays[spray == "D",][,1])
+Data12bisE = c(InsectSprays[spray == "E",][,1])
+
+wilcox.test(Data12bisC, Data12bisD, alternative = "less")
+wilcox.test(Data12bisC, Data12bisE, alternative = "less")
+wilcox.test(Data12bisD, Data12bisE, alternative = "less")
+
+pairwise.wilcox.test(Data12bis[,1], Data12bis[,2], p.adjust.method = "holm", alternative = "greater")
+
+kruskal.test(Data12bis[,1] ~ Data12bis[,2])
+
+```
+
+```{r EXO 6}
+carData::Prestige
+attach(carData::Prestige)
+
+carD = matrix(data = c(women, education, income, prestige), ncol = 4)
+education
+income
+prestige
+
+chisq.test(carD[,1:2], simulate.p.value = T)
+chisq.test(carD[,2:3], simulate.p.value = T)
+chisq.test(carD[,3:4], simulate.p.value = T)
+chisq.test(carD[,c(1,3)], simulate.p.value = T)
+chisq.test(carD[,c(1,4)], simulate.p.value = T)
+chisq.test(carD[,c(2,4)], simulate.p.value = T)
+
+df1 = as.data.frame(carD[, c(1, 3)])
+df2 = as.data.frame(carD[, c(1, 3)])
+
+df1 = df1[df1$V1 > 80,]
+df2 = df2[df2$V1 <= 80,]
+
+mean(df1[,2])
+mean(df2[,2])
+
+wilcox.test(df1[,2], df2[,2], alternative = "less")
+
+```
+
+#EX2
+
+```{r EXO 1}
+
+1 - sum(D^2-1)/(7^3-7)
+
+```
